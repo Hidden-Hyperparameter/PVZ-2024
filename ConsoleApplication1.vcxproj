@@ -128,6 +128,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="background.cpp" />
+    <ClCompile Include="game_parameters.cpp" />
+    <ClCompile Include="helper.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="game.cpp" />
     <ClCompile Include="pea.cpp" />
@@ -136,10 +138,12 @@
     <ClCompile Include="sun.cpp" />
     <ClCompile Include="test.cpp" />
     <ClCompile Include="unit.cpp" />
+    <ClCompile Include="zombie.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="background.h" />
     <ClInclude Include="game.h" />
+    <ClInclude Include="game_parameters.h" />
     <ClInclude Include="helper.h" />
     <ClInclude Include="pea.h" />
     <ClInclude Include="peashooter.h" />
@@ -147,6 +151,7 @@
     <ClInclude Include="sun.h" />
     <ClInclude Include="unit.h" />
     <ClInclude Include="units.h" />
+    <ClInclude Include="zombie.h" />
   </ItemGroup>
   <ItemGroup>
     <Text Include="debug.log" />

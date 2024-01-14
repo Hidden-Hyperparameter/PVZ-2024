@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include "background.h"
 #include <string>
+#include "helper.h"
 class BackGround;
 class Game;
 class Unit {
@@ -15,6 +16,8 @@ public:
 	//const unsigned long long WAIT;
 	int max_image_num_;
 	bool should_be_removed_ = false;
+	std::string type_;
+	int row_=-1;
 public:
 	Unit(int xp, int yp, Game* gm, BackGround* bkg, int mxnum) :
 		x_(xp), y_(yp), gm_(gm), bkg_(bkg) ,max_image_num_(mxnum){}

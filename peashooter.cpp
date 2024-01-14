@@ -1,10 +1,18 @@
 #include "peashooter.h"
 
-PeaShooter::PeaShooter(int xp, int yp, Game* gm, BackGround* bkg,  int mxnum) :
-	Plant(xp, yp, gm, bkg, mxnum)
+PeaShooter::PeaShooter(int xp, int yp, Game* gm, BackGround* bkg, int mxnum, int row) :
+	Plant(xp, yp, gm, bkg, mxnum, row)
 {
 	name_ = "peashooter";
+	printf("image number is %d\n", mxnum);
 }
 void PeaShooter::Execute() {
-	bkg_->units_.insert(new Pea(x_, y_, gm_, bkg_, bkg_->GRID_END_X + 10));
+	pea_shoot_status++;
+	if (pea_shoot_status == SHOOT_INTEVAL) {
+		auto info = bkg_->FindMinZombie(x_, row_);
+		if (info.second != nullptr) {
+			bkg_->units_.insert(new Pea(x_, y_, gm_, bkg_, row_, bkg_->GRID_END_X));
+		}
+		pea_shoot_status = 0;
+	}
 }

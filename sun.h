@@ -5,6 +5,7 @@
 #include <conio.h>
 #include <time.h>
 #include <cassert>
+class Unit;
 class Sun :public Unit {
 public:
 	const int move_step_;
@@ -12,7 +13,7 @@ public:
 	const int MAX_Y;
 public:
 	//void Fall();
-	Sun(int xp, int yp, int mv, Game* gm, BackGround* bkg,int mxnum) :Unit(xp, yp, gm, bkg, mxnum), move_step_(mv),MAX_Y(bkg->y_size_ - 100) { name_ = "sun"; }
+	Sun(int xp, int yp, int mv, Game* gm, BackGround* bkg, int mxnum);
 	void Show() override;
 	void Update() override;
 	void Removed() override;

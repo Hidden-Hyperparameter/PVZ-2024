@@ -1,9 +1,10 @@
 #include "unit.h"
 void Unit::Show() {
 	std::cout << "put " << name_ << " at " << x_ << " ," << y_ << std::endl;
-	putimage(x_, y_, bkg_->GetImage(name_, image_status_), SRCPAINT);
+	Helper::PutTransparentImage(x_, y_, bkg_->GetImage(name_, image_status_));
 }
 void Unit::Update() {
+	if (should_be_removed_)return;
 	std::cout << "Update unit named " << name_ << std::endl;
 	image_status_++;
 	if (image_status_ == max_image_num_ - 1)image_status_ = 0;

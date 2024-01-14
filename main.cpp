@@ -6,9 +6,8 @@
 int main()
 {
 	Game g;
-	while(true){
+	while(g.in_game_){
 		g.Update();
-		g.Show();
 	}
 	return 0;
 }

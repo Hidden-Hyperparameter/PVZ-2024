@@ -12,18 +12,29 @@ void Game::Init() {
 	setlinecolor(BLACK);
 }
 void Game::Update() {
-	printf("time %llu\n", time_);
 	bkg_->UserClick();
 	if (time_ % WAIT) {
 		time_++; return;
 	}
+	printf("time %llu\n", time_);
 	if (time_ >= nxt_time_sun) {
 		bkg_->CreateSun();
 		std::uniform_int_distribution<unsigned long long> distr(0, SUN_TIME);
 		nxt_time_sun = time_ + distr(gen);
 	}
+	if (time_ >= nxt_time_zombie) {
+		bkg_->CreateZombie();
+		std::uniform_int_distribution<unsigned long long> distr(0, ZOMBIE_TIME);
+		nxt_time_zombie = time_ + distr(gen);
+	}
 	bkg_->UpdateUnits();
 	bkg_->Show();
-	Sleep(500);
+	Sleep(Parameters::UPDATE_TIME);
 	time_++;
+}
+void Game::Lose() {
+	in_game_ = false;
+	clearrectangle(0, 0, x_size_, y_size_);
+	outtextxy(x_size_ / 2, y_size_ / 2, __T("You Lose"));
+	Sleep(5000);
 }
