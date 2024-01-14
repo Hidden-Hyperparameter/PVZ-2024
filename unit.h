@@ -8,21 +8,20 @@ class Game;
 class Unit {
 public:
 	int x_, y_;
-	BackGround* bkg_;
+	int row_ = -1;
 	std::string name_;
-	Game* gm_;
-	int image_status_=0;
-	unsigned long long last_update_time_=0;
-	//const unsigned long long WAIT;
-	int max_image_num_;
-	bool should_be_removed_ = false;
 	std::string type_;
-	int row_=-1;
+	bool should_be_removed_ = false;
+	int image_status_ = 0;
+	int max_image_num_;
+public:
+	BackGround* bkg_;
+	Game* gm_;
 public:
 	Unit(int xp, int yp, Game* gm, BackGround* bkg, int mxnum) :
 		x_(xp), y_(yp), gm_(gm), bkg_(bkg) ,max_image_num_(mxnum){}
-	virtual void Show();
-	virtual void Update();
-	virtual void Removed();
+	virtual void Show();//put image on screen
+	virtual void Update();//update status(containing the image status)
+	virtual void Removed();//note that this is removed
 	void MoveTo(int x, int y);
 };

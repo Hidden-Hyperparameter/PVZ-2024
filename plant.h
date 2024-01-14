@@ -2,7 +2,7 @@
 #include "unit.h"
 class Plant :public Unit {
 public:
-	bool is_moving_ = true;
+	bool is_moving_ = true;//whether following mouse
 	int life_;
 	int max_life_;
 public:

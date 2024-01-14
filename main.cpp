@@ -6,6 +6,7 @@
 int main()
 {
 	Game g;
+	g.Init();
 	while(g.in_game_){
 		g.Update();
 	}

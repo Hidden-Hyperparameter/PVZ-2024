@@ -14,7 +14,5 @@ public:
 public:
 	//void Fall();
 	Sun(int xp, int yp, int mv, Game* gm, BackGround* bkg, int mxnum);
-	void Show() override;
 	void Update() override;
-	void Removed() override;
 };

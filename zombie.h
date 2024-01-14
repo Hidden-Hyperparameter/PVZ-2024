@@ -5,10 +5,10 @@ public:
 	int life_;
 	int max_life_;
 	int left_speed_;
-	int die_head_status = 0;
-	int die_body_status = 0;
-	int eat_image_status = 0;
-	const int MAX_EAT_IMAGE;
+	int die_head_status = 0;//image status
+	int die_body_status = 0;//image status
+	int eat_image_status = 0;//image status
+	const int MAX_EAT_IMAGE;//image numbers
 	Unit* eating_plant_ = nullptr;
 	const int FIRE = Parameters::ZOMBIE_EAT;
 public:
@@ -16,5 +16,5 @@ public:
 	void DeduceLife(int amount);
 	void Update()override;
 	void Show()override;
-	void Attack();
+	void Attack();//eat plant
 };

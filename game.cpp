@@ -1,6 +1,6 @@
 #include "game.h"
 Game::Game() :bkg_(new BackGround(this)),gen(time(NULL)) {
-	Init();
+	x_size_ = bkg_->x_size_, y_size_ = bkg_->y_size_;
 }
 void Game::Show()const {
 	bkg_->Show();
@@ -12,9 +12,8 @@ void Game::Init() {
 	setlinecolor(BLACK);
 }
 void Game::Update() {
-	bkg_->UserClick();
-	if (time_ % WAIT) {
-		time_++; return;
+	for (int i = 0; i < WAIT; i++) {
+		bkg_->UserClick();
 	}
 	printf("time %llu\n", time_);
 	if (time_ >= nxt_time_sun) {
