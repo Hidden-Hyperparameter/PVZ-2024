@@ -6,8 +6,10 @@ BackGround::BackGround( Game* gm,int id) : gen_(time(NULL)),  gm_(gm),map_id_(id
 	printf("call background construction\n");
 	loadimage(&map_image_, _T("assets/map/map0.jpg"));
 	loadimage(&chooser_image_, _T("assets/others/chooser.png"));
+	loadimage(&panel_image_, _T("assets/others/panel.png"));
 	assert(map_image_.getwidth());
 	assert(chooser_image_.getwidth());
+	assert(panel_image_.getwidth());
 	LoadEveryThing();
 	//set size back
 	x_size_ = map_image_.getwidth();
@@ -17,6 +19,66 @@ BackGround::BackGround( Game* gm,int id) : gen_(time(NULL)),  gm_(gm),map_id_(id
 	for (int i = 0; i < GRID_X_NUM; i++) {
 		grid_manager_[i].resize(GRID_Y_NUM, nullptr);
 	}
+}
+void BackGround::ChoosePlants() {
+	int x = 0, i = 0, mv = (x_size_ - gm_->x_size_) / STEPS;
+	while (i < STEPS) {
+		x += mv;
+		Sleep(Parameters::UPDATE_TIME);
+		putimage(0, 0, x_size_, y_size_, &map_image_, x, 0);
+		i++;
+	}
+	int col = 0, row = 0;
+	std::vector<std::vector<std::string> > panel_manager;
+	std::vector<std::string> one_row;
+	for (int i = 0; i < bar_.size(); i++) {
+		one_row.push_back(bar_[i]);
+		col++;
+		if (col == CARD_NUM) {
+			col = 0, row++;
+			panel_manager.push_back(one_row);
+			one_row.clear();
+		}
+	}
+	panel_manager.push_back(one_row);
+	int select_max = min(bar_.size(), CARD_NUM);
+	bar_.clear();
+	while (select_max) {
+		putimage(0, 0, x_size_, y_size_, &map_image_, x, 0);
+		Helper::PutTransparentImage(CHOOSER_X, CHOOSER_Y, &chooser_image_);
+		Helper::PutTransparentImage(0,CHOOSER_Y+CARD_Y, &panel_image_);
+		for (int i = 0; i < bar_.size(); i++) {
+			putimage(CARD_START_X + CARD_X * i, CARD_START_Y,
+				cards_image_[bar_[i]]);
+		}
+		for (int i = 0; i < panel_manager.size(); i++) {
+			for (int j = 0; j < panel_manager[i].size(); j++) {
+				auto it = panel_manager[i][j];
+				if(it!="")Helper::PutTransparentImage(PANEL_START_X + j * PANEL_X, 
+					PANEL_START_Y + i * PANEL_Y,cards_image_[it]);
+			}
+		}
+		for (int i = 0; i < gm_->WAIT; i++) {
+			bool rst = peekmessage(&msg_, EX_MOUSE);//get user message
+			if (!rst)continue;//no mouse actions
+			if (msg_.message == WM_LBUTTONDOWN) {//user click
+				if ((msg_.x >= PANEL_START_X) && (msg_.x <= PANEL_END_X) && (msg_.y >= PANEL_START_Y) && (msg_.y <= PANEL_END_Y)) {
+					int x_index = (msg_.x - PANEL_START_X) / PANEL_X;
+					int y_index = (msg_.y - PANEL_START_Y) / PANEL_Y;
+					auto& it = panel_manager[y_index][x_index];
+					if (it != "") {
+						bar_.push_back(it);
+						it = "";
+						select_max--;
+						break;
+					}
+				}
+			}
+		}
+		if (select_max == 0)break;
+		Sleep(Parameters::UPDATE_TIME);
+	}
+	x_size_ = gm_->x_size_;//reset x size, so that zombies will appear at real place
 }
 
 void BackGround::LoadEveryThing() {

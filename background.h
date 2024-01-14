@@ -27,6 +27,7 @@ public:
 	int x_size_, y_size_;
 	const int SUN_STEPS =  Parameters::SUN_STEPS;
 	const int ZOMBIE_STEPS =  Parameters::ZOMBIE_STEPS;
+	const int STEPS = 2;//inital choose plant steps
 public:
 	//graphics constants(unit: pixels)
 	const int CHOOSER_X = 100, CHOOSER_Y = 0;
@@ -39,10 +40,14 @@ public:
 	const int GRID_END_X = 980, GRID_END_Y = 570;//right-bottom corner
 	const int GRID_X = 81, GRID_Y = 96;//single grid (average) size
 	const int GRID_X_NUM = 10, GRID_Y_NUM = 5;
+	const int PANEL_START_X = 24, PANEL_START_Y = 111;
+	const int PANEL_X = 53, PANEL_Y = 74;
+	const int PANEL_END_X = 439, PANEL_END_Y = 469;
 public:
 	ExMessage msg_;//interact with user
 	IMAGE map_image_;
-	IMAGE chooser_image_;                                   
+	IMAGE chooser_image_;  
+	IMAGE panel_image_;
 	std::unordered_map<std::string, int> units_max_image_num_;//for each unit, how many images do it have? Note: the name may not be a unit name, such as zombie/head
 	std::unordered_map<std::string, std::vector<IMAGE*>> units_image_;
 	std::unordered_map<std::string, IMAGE*> cards_image_;//plant cards: in chooser
@@ -57,6 +62,7 @@ public:
 //Initialize
 	BackGround( Game* gm,int id=0);
 	void InitPrice();
+	void ChoosePlants();
 //Load functions
 	std::pair<int,int> LoadUnit(const char* s);//load single folder. The return value is the picture size.
 	std::pair<int, int> LoadPlant(const char* s);//also load cards

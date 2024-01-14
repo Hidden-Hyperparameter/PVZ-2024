@@ -23,6 +23,8 @@ public:
 	unsigned long long nxt_time_zombie = Parameters::INIT_ZOMBIE_TIME;//next time generating zombie
 	bool in_game_ = true;
 public:
+
+public:
 	Game();
 	void Show()const;
 	void Init();//initalize the graphics interface

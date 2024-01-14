@@ -1,6 +1,6 @@
 #include "game.h"
 Game::Game() :bkg_(new BackGround(this)),gen(time(NULL)) {
-	x_size_ = bkg_->x_size_, y_size_ = bkg_->y_size_;
+	y_size_ = bkg_->y_size_;
 }
 void Game::Show()const {
 	bkg_->Show();
@@ -10,6 +10,8 @@ void Game::Init() {
 	settextcolor(GREEN);
 	setbkcolor(BLACK);
 	setlinecolor(BLACK);
+	//show starter page
+	bkg_->ChoosePlants();
 }
 void Game::Update() {
 	for (int i = 0; i < WAIT; i++) {

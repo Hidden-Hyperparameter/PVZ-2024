@@ -12,6 +12,7 @@ void Pea::Update() {
 }
 void Pea::Attack() {
 	auto info = bkg_->FindMinZombie(x_, row_);
+	if (info.second == nullptr)return;
 	if (info.first < x_) {
 		dynamic_cast<Zombie*>(info.second)->DeduceLife(FIRE);
 		printf("image status is now %d\n", 1);
