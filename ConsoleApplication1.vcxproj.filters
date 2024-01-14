@@ -51,6 +51,9 @@
     <ClCompile Include="game_parameters.cpp">
       <Filter>资源文件</Filter>
     </ClCompile>
+    <ClCompile Include="sunflower.cpp">
+      <Filter>资源文件</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="background.h">
@@ -84,6 +87,9 @@
       <Filter>头文件</Filter>
     </ClInclude>
     <ClInclude Include="game_parameters.h">
+      <Filter>头文件</Filter>
+    </ClInclude>
+    <ClInclude Include="sunflower.h">
       <Filter>头文件</Filter>
     </ClInclude>
   </ItemGroup>

@@ -136,6 +136,7 @@
     <ClCompile Include="peashooter.cpp" />
     <ClCompile Include="plant.cpp" />
     <ClCompile Include="sun.cpp" />
+    <ClCompile Include="sunflower.cpp" />
     <ClCompile Include="test.cpp" />
     <ClCompile Include="unit.cpp" />
     <ClCompile Include="zombie.cpp" />
@@ -149,6 +150,7 @@
     <ClInclude Include="peashooter.h" />
     <ClInclude Include="plant.h" />
     <ClInclude Include="sun.h" />
+    <ClInclude Include="sunflower.h" />
     <ClInclude Include="unit.h" />
     <ClInclude Include="units.h" />
     <ClInclude Include="zombie.h" />

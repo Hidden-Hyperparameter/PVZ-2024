@@ -9,6 +9,7 @@ void BackGround::LoadEveryThing() {
 	LoadUnit("pea");
 	//plants
 	LoadPlant("peashooter");
+	LoadPlant("sunflower");
 	//zombies
 	LoadZombie("zombie");
 }
@@ -34,6 +35,7 @@ std::pair<int,int> BackGround::LoadUnit(const char* s) {
 }
 std::pair<int,int> BackGround::LoadPlant(const char* s) {
 	auto tmp = LoadUnit(s);
+	bar_.push_back(s);
 	//load card
 	char path[64];
 	sprintf_s(path, sizeof(path), "assets/cards/%s.png", s);
@@ -59,7 +61,6 @@ BackGround::BackGround( Game* gm,int id) : gen_(time(NULL)),  gm_(gm),WAIT(gm->W
 	loadimage(&chooser_image_, _T("assets/others/chooser.png"));
 	assert(map_image_.getwidth());
 	assert(chooser_image_.getwidth());
-	bar_ = { "peashooter" };
 	LoadEveryThing();
 	//set size back
 	x_size_ = map_image_.getwidth();
@@ -73,6 +74,7 @@ BackGround::BackGround( Game* gm,int id) : gen_(time(NULL)),  gm_(gm),WAIT(gm->W
 }
 void BackGround::InitPrice() {
 	units_price_["peashooter"] = 100;
+	units_price_["sunflower"] = 50;
 }
 void BackGround::Show(){
 	//clearrectangle(0, 0, x_size_, y_size_);
@@ -181,6 +183,9 @@ Plant* BackGround::MakePlant(std::string name, int x, int y) {
 	std::cout << "making unit named " << name << std::endl;
 	if (name == "peashooter")return new PeaShooter(
 		x, y,gm_, this,  units_max_image_num_[name]
+	);
+	if (name == "sunflower")return new SunFlower(
+		x, y, gm_, this, units_max_image_num_[name]
 	);
 	return new Plant(
 		x, y, gm_, this,  units_max_image_num_[name]
