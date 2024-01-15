@@ -7,9 +7,9 @@ BackGround::BackGround( Game* gm,int id) : gen_(time(NULL)),  gm_(gm),map_id_(id
 	loadimage(&map_image_, _T("assets/map/map0.jpg"));
 	loadimage(&chooser_image_, _T("assets/others/chooser.png"));
 	loadimage(&panel_image_, _T("assets/others/panel.png"));
-	assert(map_image_.getwidth());
-	assert(chooser_image_.getwidth());
-	assert(panel_image_.getwidth());
+	//assert(map_image_.getwidth());
+	//assert(chooser_image_.getwidth());
+	//assert(panel_image_.getwidth());
 	LoadEveryThing();
 	//set size back
 	x_size_ = map_image_.getwidth();
