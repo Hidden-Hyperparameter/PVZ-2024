@@ -3,6 +3,7 @@
 SunFlower::SunFlower(int xp, int yp, Game* gm, BackGround* bkg, int mxnum, int row, int max_life):
 	Plant(xp, yp, gm, bkg, mxnum, row, max_life),gen_sun_time_(GEN_SUN_INTERVAL/2) {
 	name_ = "sunflower";
+	type = Parameters::Peatype::none;
 }
 void SunFlower::Execute() {
 	if (gen_sun_time_ == 0) {

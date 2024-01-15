@@ -1,8 +1,8 @@
 #include "plant.h"
 Plant::Plant(int xp, int yp, Game* gm, BackGround* bkg, int mxnum,int row,int max_life):
-	Unit(xp, yp, gm, bkg, mxnum),max_life_(max_life),life_(max_life)
-{
-	type_ = "plant"; row_ = row;
+	Unit(xp, yp, gm, bkg, mxnum),max_life_(max_life),life_(max_life){
+	type_ = "plant"; 
+	row_ = row;
 }
 void Plant::Update() {
 	if (is_moving_)return;

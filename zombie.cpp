@@ -32,18 +32,31 @@ void Zombie::Attack() {
 		eating_plant_ = nullptr;
 	}
 }
-void Zombie::DeduceLife(int amount) {
-	if (life_ < 0)return;
+void Zombie::DeduceLife(int amount,Parameters::Peatype type) {
+	if (life_ < 0) {
+		return;
+	}
 	life_ -= amount;
 }
 void Zombie::Show() {
 	if (life_ < 0) {//show dead images
-		bool head_show = false,body_show=false;
-		if (die_head_status < bkg_->units_max_image_num_["zombie/head"]-1)
-			head_show=true,Helper::PutTransparentImage(x_, y_, bkg_->GetImage("zombie/head", die_head_status)),die_head_status++;
-		if (die_body_status < bkg_->units_max_image_num_["zombie/body"]-1)
-			body_show=true,Helper::PutTransparentImage(x_, y_, bkg_->GetImage("zombie/body", die_body_status)),die_body_status++;
-		if(!head_show&&!body_show) Removed();//remove after shown
+		if (type == Parameters::Peatype::single) {
+			bool head_show = false, body_show = false;
+			if (die_head_status < bkg_->units_max_image_num_["zombie/head"] - 1)
+				head_show = true, Helper::PutTransparentImage(x_, y_, bkg_->GetImage("zombie/head", die_head_status)), die_head_status++;
+			if (die_body_status < bkg_->units_max_image_num_["zombie/body"] - 1)
+				body_show = true, Helper::PutTransparentImage(x_, y_, bkg_->GetImage("zombie/body", die_body_status)), die_body_status++;
+			if (!head_show && !body_show) Removed();//remove after shown
+		}
+		if (type == Parameters::Peatype::range) {
+			bool explode_show = false;
+			if (die_explode_status < bkg_->units_max_image_num_["zombies/explode"] - 1) {
+				explode_show = true;
+				Helper::PutTransparentImage(x_, y_, bkg_->GetImage("zombies/explode", die_explode_status));
+				die_explode_status++;
+			}
+			if (!explode_show) Removed();//remove after shown
+		}
 	}
 	else {
 		if (eating_plant_ != nullptr) {//show eating images
