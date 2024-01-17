@@ -4,3 +4,4 @@
 *.exe
 x64/
 debug.log
+build/
