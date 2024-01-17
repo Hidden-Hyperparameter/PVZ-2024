@@ -3,9 +3,9 @@
 #include "units.h"
 BackGround::BackGround( Game* gm,int id) : gen_(time(NULL)),  gm_(gm),map_id_(id) {
 	printf("call background construction\n");
-	loadimage(&map_image_, putimage("assets/map/map0.jpg"));
-	loadimage(&chooser_image_, putimage("assets/others/chooser.png"));
-	loadimage(&panel_image_, putimage("assets/others/panel.png"));
+	loadimage(&map_image_, _T("assets/map/map0.jpg"));
+	loadimage(&chooser_image_, _T("assets/others/chooser.png"));
+	loadimage(&panel_image_, _T("assets/others/panel.png"));
 	//assert(map_image_.getwidth());
 	//assert(chooser_image_.getwidth());
 	//assert(panel_image_.getwidth());
