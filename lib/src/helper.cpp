@@ -14,24 +14,27 @@ namespace Helper {
 		return final_path;
 	}
 	const wchar_t* NumToWchar(int x) {
-		char ch[64];
-		if (x) {
-			int num[4], cnt = 0;
-			while (x) {
-				num[cnt++] = x % 10; x /= 10;
-			}
-			for (int i = 0; i < cnt; i++) {
-				ch[i] = num[cnt - i - 1] + '0';
-			}ch[cnt] = 0;
-		}
-		else {
-			ch[0] = '0', ch[1] = 0;
-		}
+		auto ch=(NumToString(x)).c_str();
 		//sprintf_s(ch,sizeof(ch), "%d", x);
 		//std::cout << "To " << (std::string)(ch) << std::endl;
 		return CharToWchar(ch);
 	}
-
+	std::string NumToString(int x){
+		std::string ch;
+		if (x) {
+			int num[5], cnt = 0;
+			while (x) {
+				num[cnt++] = x % 10; x /= 10;
+			}
+			for (int i = 0; i < cnt; i++) {
+				ch += ( num[cnt - i - 1] + '0');
+			}
+		}
+		else {
+			ch="0";
+		}
+		return ch;
+	}
 	//These two below are external graphics function which are used to make the effect of putimage() better,
 	// so that there won't be black bars around the item picture.
 	void _putimagePNG(int  picture_x, int picture_y, IMAGE* picture) {
@@ -66,7 +69,7 @@ namespace Helper {
 		// }
 	}
 	//when in use, call this function
-	void PutTransparentImage(int x, int y, IMAGE* picture) {
+	// void PutTransparentImage(int x, int y, IMAGE* picture) {
 		// IMAGE imgTmp, imgTmp2, imgTmp3;
 		// int winWidth = getwidth();
 		// int winHeight = getheight();
@@ -101,5 +104,5 @@ namespace Helper {
 		// 	picture = &imgTmp3;
 		// }
 		// _putimagePNG(x, y, picture);
-	}
+	// }
 }

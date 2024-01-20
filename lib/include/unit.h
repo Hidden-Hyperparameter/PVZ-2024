@@ -18,8 +18,9 @@ public:
 	BackGround* bkg_;
 	Game* gm_;
 public:
-	Unit(int xp, int yp, Game* gm, BackGround* bkg, int mxnum) :
-		x_(xp), y_(yp), gm_(gm), bkg_(bkg) ,max_image_num_(mxnum){}
+	Unit(int xp, int yp, Game* gm, BackGround* bkg) ;
+	Unit(int xp, int yp, Game* gm, BackGround* bkg,const std::string& name) ;
+		
 	virtual void Show();//put image on screen
 	virtual void Update();//update status(containing the image status)
 	virtual void Removed();//note that this is removed

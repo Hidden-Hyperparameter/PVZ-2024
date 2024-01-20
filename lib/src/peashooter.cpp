@@ -1,10 +1,8 @@
 #include "peashooter.h"
 
-PeaShooter::PeaShooter(int xp, int yp, Game* gm, BackGround* bkg, int mxnum, int row) :
-	Plant(xp, yp, gm, bkg, mxnum, row)
+PeaShooter::PeaShooter(int xp, int yp, Game* gm, BackGround* bkg,  int row) :
+	Plant(xp, yp, gm, bkg, "peashooter", row)
 {
-	name_ = "peashooter";
-	printf("image number is %d\n", mxnum);
 }
 void PeaShooter::Execute() {
 	pea_shoot_status++;

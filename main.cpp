@@ -6,9 +6,11 @@
 #include "gui/lib/include/app.h"
 int main()
 {
-	Vulkan::App app;
-	app.run();
-	printf("Hellp,worild!\n");
+	// Vulkan::App app;
+	// app.run();
+	// printf("Hellp,worild!\n");
+	Game g;
+	g.Start();
 	// Game g;
 	// g.Init();
 	// while(g.in_game_){

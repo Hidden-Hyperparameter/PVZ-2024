@@ -3,16 +3,9 @@
 #include "units.h"
 BackGround::BackGround( Game* gm,int id) : gen_(time(NULL)),  gm_(gm),map_id_(id) {
 	printf("call background construction\n");
-	loadimage(&map_image_, _T("assets/map/map0.jpg"));
-	loadimage(&chooser_image_, _T("assets/others/chooser.png"));
-	loadimage(&panel_image_, _T("assets/others/panel.png"));
-	assert(map_image_.getwidth());
-	assert(chooser_image_.getwidth());
-	assert(panel_image_.getwidth());
-	LoadEveryThing();
+	
 	//set size back
-	x_size_ = map_image_.getwidth();
-	y_size_ = map_image_.getheight();
+	
 	InitPrice();
 	grid_manager_.resize(GRID_X_NUM);
 	for (int i = 0; i < GRID_X_NUM; i++) {
@@ -49,8 +42,8 @@ void BackGround::ChoosePlants() {
 	bar_.clear();
 	while (select_max) {
 		putimage(0, 0, x_size_, y_size_, &map_image_, x, 0);
-		Helper::PutTransparentImage(CHOOSER_X, CHOOSER_Y, &chooser_image_);
-		Helper::PutTransparentImage(0,CHOOSER_Y+CARD_Y, &panel_image_);
+		gm_->Draw(CHOOSER_X,CHOOSER_Y,gm_->GetImage("chooser"));
+		gm_->Draw(0,CARD_Y+CHOOSER_Y,gm_->GetImage("panel"));
 		for (int i = 0; i < bar_.size(); i++) {
 			putimage(CARD_START_X + CARD_X * i, CARD_START_Y,
 				cards_image_[bar_[i]]);
@@ -58,8 +51,8 @@ void BackGround::ChoosePlants() {
 		for (int i = 0; i < panel_manager.size(); i++) {
 			for (int j = 0; j < panel_manager[i].size(); j++) {
 				auto it = panel_manager[i][j];
-				if(it!="")Helper::PutTransparentImage(PANEL_START_X + j * PANEL_X, 
-					PANEL_START_Y + i * PANEL_Y,cards_image_[it]);
+				if(it!="")gm_->Draw(PANEL_START_X + j * PANEL_X, 
+					PANEL_START_Y + i * PANEL_Y,gm_->GetCardImage(it));
 			}
 		}
 		for (int i = 0; i < gm_->WAIT; i++) {
@@ -85,69 +78,17 @@ void BackGround::ChoosePlants() {
 	x_size_ = gm_->x_size_;//reset x size, so that zombies will appear at real place
 }
 
-void BackGround::LoadEveryThing() {
-//sun	
-	sun_size_ = LoadUnit("sun");
-	LoadUnit("pea");
-//plants
-	LoadPlant("peashooter");
-	LoadPlant("sunflower");
-//zombies
-	LoadZombie("zombie");
-}
-std::pair<int,int> BackGround::LoadUnit(const char* s) {
-	int i = 1;
-	char path[64];
-	std::vector<IMAGE*> images;
-	while (i) {
-		sprintf_s(path,sizeof(path), "assets/%s/%d.png", s, i);//write the path in string
-		IMAGE* im=new IMAGE;
-		loadimage(im, Helper::CharToWchar(path));
-		assert(im);
-		i++;
-		if (!im->getwidth())break;
-		images.push_back(im);
-	}
-	assert(images.size());//must has at least one image
-	units_image_[(std::string)s] = images;
-	units_max_image_num_[(std::string)s] = i-1;
-	return std::make_pair(images[0]->getwidth(),images[0]->getheight());
-}
-std::pair<int,int> BackGround::LoadPlant(const char* s) {
-	auto tmp = LoadUnit(s);
-	bar_.push_back(s);
-	//load card
-	char path[64];
-	sprintf_s(path, sizeof(path), "assets/cards/%s.png", s);
-	IMAGE* im = new IMAGE;
-	loadimage(im, Helper::CharToWchar(path));
-	assert(im);
-	Resize(im, CARD_X, CARD_Y);
-	cards_image_[(std::string)s] = im;
-	return tmp;
-}
-void BackGround::LoadZombie(const char* s) {
-	std::string name = s;
-	LoadUnit(name.c_str());
-	std::string head_name = name + "/head";
-	LoadUnit(head_name.c_str());
-	std::string body_name = name + "/body";
-	LoadUnit(body_name.c_str());
-	std::string attack_name = name + "/attack";
-	LoadUnit(attack_name.c_str());
-}
-
 void BackGround::InitPrice() {
 	units_price_["peashooter"] = 100;
 	units_price_["sunflower"] = 50;
 }
 void BackGround::Show(){
-	putimage(0, 0, &map_image_);
-	putimage(CHOOSER_X, CHOOSER_Y, &chooser_image_);
-	outtextxy(SUN_CNT_X, SUN_CNT_Y, Helper::NumToWchar(sun_cnt_));//show sun numbers
+	gm_->Draw(0, 0, gm_->GetImage("map"));
+	gm_->Draw(CHOOSER_X, CHOOSER_Y, gm_->GetImage("chooser"));
+	// outtextxy(SUN_CNT_X, SUN_CNT_Y, Helper::NumToWchar(sun_cnt_));//show sun numbers
 	for (int i = 0; i < bar_.size();i++) {
-		putimage(CARD_START_X + CARD_X * i, CARD_START_Y,
-			cards_image_[bar_[i]]);
+		gm_->Draw(CARD_START_X + CARD_X * i, CARD_START_Y,
+			gm_->GetCardImage(bar_[i]));
 	}
 	//show units as well as erasing the garbage(died) units.
 	for (auto it = units_.begin(); it != units_.end();) {
@@ -164,13 +105,13 @@ void BackGround::Show(){
 void BackGround::CreateSun(){
 	auto xrd = std::uniform_int_distribution<int>(10, x_size_-sun_size_.first);
 	auto yrd = std::uniform_int_distribution<int>(10, y_size_);
-	units_.insert(new Sun(xrd(gen_), 100,y_size_/SUN_STEPS,gm_,this,units_max_image_num_["sun"]));
+	units_.insert(new Sun(xrd(gen_), 100,y_size_/SUN_STEPS,gm_,this));
 }
 void BackGround::CreateZombie() {
 	auto row = std::uniform_int_distribution<int>(0, GRID_Y_NUM-1);
 	int rw = row(gen_);
 	units_.insert(new Zombie(GRID_END_X,GRID_START_Y+(rw - 1) * GRID_Y,(GRID_END_X-GRID_START_X)/ZOMBIE_STEPS,
-		gm_,this,units_max_image_num_["zombie"],rw));
+		gm_,this,rw));
 }
 void BackGround::UpdateUnits() {
 	for (auto it : units_) {
@@ -234,11 +175,6 @@ void BackGround::UserClick() {
 		}
 		
 	}
-}
-
-IMAGE* BackGround::GetImage(const std::string& s, int status){
-	assert(units_image_[s].size() > status);
-	return units_image_[s][status];
 }
 Plant* BackGround::MakePlant(std::string name, int x, int y) {
 	std::cout << "making unit named " << name << std::endl;

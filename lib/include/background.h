@@ -46,7 +46,6 @@ public:
 	 * FIXME: app shouldn't be nullptr
 	 * 
 	 */
-	Vulkan::App* app_=nullptr;
 public:
 	std::mt19937 gen_;
 	std::unordered_set<Unit*> units_;
@@ -73,9 +72,9 @@ public:
 	const int PANEL_END_X = 439, PANEL_END_Y = 469;
 public:
 	ExMessage msg_;//interact with user
-	IMAGE map_image_;
-	IMAGE chooser_image_;  
-	IMAGE panel_image_;
+	int map_image_;
+	int chooser_image_;  
+	int panel_image_;
 	std::unordered_map<std::string, int> units_max_image_num_;//for each unit, how many images do it have? Note: the name may not be a unit name, such as zombie/head
 	std::unordered_map<std::string, std::vector<IMAGE*>> units_image_;
 	std::unordered_map<std::string, IMAGE*> cards_image_;//plant cards: in chooser
@@ -91,13 +90,7 @@ public:
 	BackGround( Game* gm,int id=0);
 	void InitPrice();
 	void ChoosePlants();
-//Load functions
-	std::pair<int,int> LoadUnit(const char* s);//load single folder. The return value is the picture size.
-	std::pair<int, int> LoadPlant(const char* s);//also load cards
-	void LoadZombie(const char* s);//also load death pictures and eat pictures
-	void LoadEveryThing();//modify in this function
 //Get image based on name and status. Warning: if status out of bound, then this will abort.
-	IMAGE* GetImage(const std::string& s, int status = 0);
 //Create
 	void CreateSun();
 	void CreateZombie();

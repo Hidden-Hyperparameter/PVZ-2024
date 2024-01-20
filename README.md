@@ -8,6 +8,9 @@
 
 For more detailed information on the repository, see the [docs](/docs/README.md).
 
+# RECURSIVE PULL
+
+
 # REFACTOR
 
 address [here]()
@@ -25,3 +28,6 @@ don't use initializer list when constructing objects containing pointers. the se
 Vulkan SDK installed on computer and set as path variable(download at lunar G[hyperlink]))
 
 pulll gteh github submodules recursively
+
+# May not work
+add VULKAN_DEBUG manually

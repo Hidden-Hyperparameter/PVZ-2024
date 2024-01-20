@@ -20,7 +20,7 @@ void main() {
     gl_Position =  vec4(inPosition+push.offset, 0.0, 1.0);
     // gl_Position =  vec4(inPosition+push.offset, 0.0, 1.0);
     // fragColor = vec3(1.0,1.0,0.0);
-    fragTexCoord = inTexCoord;
+    fragTexCoord = vec2(-inTexCoord[0],inTexCoord[1]);
     // fragColor=push.color;
     fragColor=inColor;
 }

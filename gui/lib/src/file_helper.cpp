@@ -1,9 +1,12 @@
 #include "file_helper.h"
-#define RELATIVE {"../../../gui/","../../gui/"} //modify this line based on the current working directory
+#define RELATIVE {"../../","","gui/","../../gui/"} //Change this line based on the current working directory. More specifically, please APPEND instead of REMOVE items from the list.
 std::vector<char> FileHelper::ReadFile(const std::string& file_name){
     #ifdef VULKAN_DEBUG
     char cwd[1024];
     _getcwd(cwd, sizeof(cwd));
+    #ifdef GUI_TEST
+    printf("(Now we are working on GUI test mode)\n");
+    #endif
     printf("Current working directory: %s\n", cwd);
     #endif
     std::vector<std::string> relative=RELATIVE;
@@ -35,6 +38,9 @@ std::tuple<int,int,FileHelper::IMAGE*> FileHelper::LoadImage(const std::string& 
     #else
     getcwd(cwd, sizeof(cwd));
     #endif
+    #ifdef GUI_TEST
+    printf("(Now we are working on GUI test mode)\n");
+    #endif
     printf("Current working directory: %s\n", cwd);
     #endif
     int tex_width,tex_height,tex_channel;
@@ -48,11 +54,12 @@ std::tuple<int,int,FileHelper::IMAGE*> FileHelper::LoadImage(const std::string& 
         }
         // uint64_t image_size=tex_height*tex_width*4;
     }
+    std::cout<<"Can't find the image"<<std::endl;
     /**
      * If this line fails, edit the definition of macro RELATIVE
      * 
      */
-    assert(false && "load image fail");
+    return std::make_tuple(0,0,nullptr);
 }
 void FileHelper::FreeImage(FileHelper::IMAGE* image){
     assert(image && "can't free a empty image");

@@ -1,8 +1,14 @@
 #include "plant.h"
-Plant::Plant(int xp, int yp, Game* gm, BackGround* bkg, int mxnum,int row,int max_life):
-	Unit(xp, yp, gm, bkg, mxnum),max_life_(max_life),life_(max_life)
+Plant::Plant(int xp, int yp, Game* gm, BackGround* bkg, int row,int max_life):
+	Unit(xp, yp, gm, bkg),max_life_(max_life),life_(max_life)
 {
 	type_ = "plant"; row_ = row;
+}
+Plant::Plant(int xp, int yp, Game* gm, BackGround* bkg,const std::string& name, int row,int max_life):
+	Unit(xp, yp, gm, bkg, name),max_life_(max_life),life_(max_life)
+{
+	type_ = "plant"; row_ = row;
+	max_image_num_=gm_->GetImageNum(name_);
 }
 void Plant::Update() {
 	if (is_moving_)return;

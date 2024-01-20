@@ -4,7 +4,7 @@ add_subdirectory(lib)
 #add_subdirectory(external/Vulkan-Headers)
 target_include_directories(gui_test PUBLIC lib)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/external)
-target_link_directories(gui_test PUBLIC lib external)
+target_link_directories(gui_lib PUBLIC lib external)
 target_link_libraries(gui_test PUBLIC gui_lib gui_external)
 # file(GLOB_RECURSE GLSL_SOURCE_FILES "${PROJECT_SOURCE_DIR}/shaders/*.spv"
 # )
@@ -12,6 +12,8 @@ target_link_libraries(gui_test PUBLIC gui_lib gui_external)
 # taken from VBlancos vulkan tutorial
 # https://github.com/vblanco20-1/vulkan-guide/blob/all-chapters/CMakeLists.txt
 # message("Compiling Shaders...") 
+
+target_compile_definitions(gui_test PRIVATE GUI_TEST=1)
 find_program(GLSL_VALIDATOR glslangValidator REQUIRED_FILES 
   ${Vulkan_GLSLANG_VALIDATOR_EXECUTABLE} 
   /usr/bin 

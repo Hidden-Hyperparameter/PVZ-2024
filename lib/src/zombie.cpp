@@ -1,8 +1,13 @@
 #include "zombie.h"
 #include "plant.h"
-Zombie::Zombie(int xp, int yp,int left_speed, Game* gm, BackGround* bkg, int mxnum,int row,int maxlife):
-	Unit(xp, yp, gm, bkg, mxnum), left_speed_(left_speed), max_life_(maxlife), life_(maxlife),MAX_EAT_IMAGE(bkg->units_max_image_num_["zombie/attack"]) {
-	name_ = "zombie"; type_ = "zombie";
+Zombie::Zombie(int xp, int yp,int left_speed, Game* gm, BackGround* bkg, int row,int maxlife):
+	Unit(xp, yp, gm, bkg,"zombie"), left_speed_(left_speed), max_life_(maxlife), life_(maxlife) {
+	type_ = "zombie";
+	row_ = row;
+}
+Zombie::Zombie(int xp, int yp,int left_speed, Game* gm, BackGround* bkg, const std::string& name,int row,int maxlife):
+	Unit(xp, yp, gm, bkg, name), left_speed_(left_speed), max_life_(maxlife), life_(maxlife),MAX_EAT_IMAGE(gm_->GetImageNum(name+"/attack")) {
+	type_ = "zombie";
 	row_ = row;
 }
 void Zombie::Update() {
@@ -40,17 +45,17 @@ void Zombie::Show() {
 	if (life_ < 0) {//show dead images
 		bool head_show = false,body_show=false;
 		if (die_head_status < bkg_->units_max_image_num_["zombie/head"]-1)
-			head_show=true,Helper::PutTransparentImage(x_, y_, bkg_->GetImage("zombie/head", die_head_status)),die_head_status++;
+			head_show=true,gm_->Draw(x_, y_, gm_->GetImage("zombie/head", die_head_status)),die_head_status++;
 		if (die_body_status < bkg_->units_max_image_num_["zombie/body"]-1)
-			body_show=true,Helper::PutTransparentImage(x_, y_, bkg_->GetImage("zombie/body", die_body_status)),die_body_status++;
+			body_show=true,gm_->Draw(x_, y_, gm_->GetImage("zombie/body", die_body_status)),die_body_status++;
 		if(!head_show&&!body_show) Removed();//remove after shown
 	}
 	else {
 		if (eating_plant_ != nullptr) {//show eating images
-			Helper::PutTransparentImage(x_, y_, bkg_->GetImage(name_ + "/attack", eat_image_status));
+			gm_->Draw(x_, y_, gm_->GetImage(name_ + "/attack", eat_image_status));
 		}
 		else {//show moving images
-			Helper::PutTransparentImage(x_, y_, bkg_->GetImage(name_, image_status_));
+			gm_->Draw(x_, y_, gm_->GetImage(name_, image_status_));
 		}
 	}
 }

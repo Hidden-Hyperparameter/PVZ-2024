@@ -7,7 +7,7 @@ public:
 	const int SHOOT_INTEVAL = Parameters::PEA_SHOOT_INTEVAL;
 	int pea_shoot_status = 0;
 public:
-	PeaShooter(int xp, int yp, Game* gm, BackGround* bkg, int mxnum, int row = -1);
+	PeaShooter(int xp, int yp, Game* gm, BackGround* bkg, int row = -1);
 	//void Shoot();
 	void Execute()override;
 };

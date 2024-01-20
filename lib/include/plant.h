@@ -6,7 +6,8 @@ public:
 	int life_;
 	int max_life_;
 public:
-	Plant(int xp, int yp, Game* gm, BackGround* bkg, int mxnum, int row = -1,int max_life=Parameters::PLANT_DEFAULT_LIFE);
+	Plant(int xp, int yp, Game* gm, BackGround* bkg, int row = -1,int max_life=Parameters::PLANT_DEFAULT_LIFE);
+	Plant(int xp, int yp, Game* gm, BackGround* bkg, const std::string &name,int row = -1,int max_life=Parameters::PLANT_DEFAULT_LIFE);
 	void Update()override;
 	virtual void Execute();
 	void DeduceLife(int amount);

@@ -1,6 +1,12 @@
 #include "unit.h"
+Unit::Unit(int xp, int yp, Game* gm, BackGround* bkg):
+		x_(xp), y_(yp), gm_(gm), bkg_(bkg) {
+		}
+Unit::Unit(int xp, int yp, Game* gm, BackGround* bkg,const std::string& name):x_(xp), y_(yp), gm_(gm), bkg_(bkg) ,name_(name){
+			max_image_num_=(gm_->GetImageNum(name_));
+		}
 void Unit::Show() {
-	Helper::PutTransparentImage(x_, y_, bkg_->GetImage(name_, image_status_));
+	gm_->Draw(x_,y_,gm_->GetImage(name_,image_status_));
 }
 void Unit::Update() {
 	if (should_be_removed_)return;

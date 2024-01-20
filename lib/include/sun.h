@@ -13,6 +13,6 @@ public:
 	const int MAX_Y;
 public:
 	//void Fall();
-	Sun(int xp, int yp, int mv, Game* gm, BackGround* bkg, int mxnum);
+	Sun(int xp, int yp, int mv, Game* gm, BackGround* bkg);
 	void Update() override;
 };

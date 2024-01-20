@@ -54,7 +54,7 @@ class Image{
 public:
     Device* device_;
     Command* commander_;
-    VkPipelineLayout* pipe_lay_;
+    VkPipelineLayout* pipe_lay_=nullptr;
     Descriptor* descriptot_;
     std::vector<Vertex> vertexs_;
     VkBuffer vertex_buff_;
@@ -67,8 +67,7 @@ public:
     VkDeviceMemory image_mem_;
     VkImageView image_view_;
   
-    Image(Command* commander,int id,int window_x,int window_y,int x_size_,int y_size_,int x_pos=0,int y_pos=0);
-    int id_;
+    Image(Command* commander,int window_x,int window_y,int x_size_,int y_size_,int x_pos=0,int y_pos=0);
     const int WINDOW_Width;
     const int WINDOW_Height;
     int x_pos_=0,y_pos_=0;
@@ -96,7 +95,7 @@ public:
      */
     void Update(int move_x,int move_y);
     VkDescriptorImageInfo GetImageDescriptotInfo(int i);
-    void Load(const std::string& image_name_);
+    bool Load(const std::string& image_name_);
     void Transition(VkImage image, VkFormat format, VkImageLayout old,VkImageLayout new_);
     ~Image();
 };

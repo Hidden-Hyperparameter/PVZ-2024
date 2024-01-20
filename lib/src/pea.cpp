@@ -1,8 +1,8 @@
 #include "pea.h"
 #include "zombie.h"
 Pea::Pea(int xp, int yp, Game* gm, BackGround* bkg, int row,int mxx)
-	:Unit(xp, yp, gm, bkg, 1), MAX_X(mxx), move_step_(Parameters::PEA_MOVE_STEP) {
-	name_ = "pea"; row_ = row;
+	:Unit(xp, yp, gm, bkg,"pea"), MAX_X(mxx), move_step_(Parameters::PEA_MOVE_STEP) {
+	 row_ = row;
 }
 void Pea::Update() {
 	if (x_ >= MAX_X)Removed();
