@@ -1,9 +1,14 @@
 #include "helper.h"
+// #define WCHAR_IS_CHAR
 namespace Helper {
 	const wchar_t* CharToWchar(const char* path) {
 		wchar_t final_path[128];
 		for (int j = 0;; j++) {
+			#ifndef WCHAR_IS_CHAR
 			final_path[j] = (wchar_t)path[j];
+			#else
+			final_path[j] = path[j];
+			#endif
 			if (path[j] == 0)break;
 		}
 		return final_path;

@@ -12,7 +12,16 @@ For more detailed information on the repository, see the [docs](/docs/README.md)
 
 address [here]()
 
-
 # 无法解析的外部符号
 
-删除build 文件夹重试
+删除build 文件夹重试,header gaurd
+
+use pointers
+
+don't use initializer list when constructing objects containing pointers. the sequence may matter
+
+# Requirements
+
+Vulkan SDK installed on computer and set as path variable(download at lunar G[hyperlink]))
+
+pulll gteh github submodules recursively
