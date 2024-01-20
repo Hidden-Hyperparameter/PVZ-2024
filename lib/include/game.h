@@ -3,7 +3,21 @@
 #include "background.h"
 #include "game_parameters.h"
 #include <time.h>
-#include <graphics.h>
+/**
+ * FIXME:
+ * 
+ *
+ * 
+ * 
+*/
+#define initgraph(a,b) 1
+#define settextcolor(a)
+#define setbkcolor(a)
+#define setlinecolor(a)
+#define GREEN 1
+#define BLACK 1
+#define clearrectangle(a,b,c,d) 1
+// #include <graphics.h>
 #include <conio.h>
 class Parameters;
 class BackGround;

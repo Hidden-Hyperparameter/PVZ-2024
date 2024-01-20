@@ -3,7 +3,14 @@
 #define __HELPER__
 #include <stdio.h>
 #include <iostream>
-#include <graphics.h>
+// #include <graphics.h>
+
+/**
+ * FIXME:
+ * 
+ */
+#define IMAGE std::pair<int,int>
+
 namespace Helper {
 	const wchar_t* CharToWchar(const char* path);
 	const wchar_t* NumToWchar(int x);

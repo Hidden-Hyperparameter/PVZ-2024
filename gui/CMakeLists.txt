@@ -4,7 +4,7 @@ add_subdirectory(lib)
 #add_subdirectory(external/Vulkan-Headers)
 target_include_directories(gui_test PUBLIC lib)
 include_directories(${CMAKE_CURRENT_SOURCE_DIR}/external)
-target_link_directories(gui_test PUBLIC gui_lib)
+target_link_directories(gui_test PUBLIC lib external)
 target_link_libraries(gui_test PUBLIC gui_lib gui_external)
 # file(GLOB_RECURSE GLSL_SOURCE_FILES "${PROJECT_SOURCE_DIR}/shaders/*.spv"
 # )

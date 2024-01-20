@@ -1,7 +1,6 @@
 #include "background.h"
 #include "helper.h"
 #include "units.h"
-
 BackGround::BackGround( Game* gm,int id) : gen_(time(NULL)),  gm_(gm),map_id_(id) {
 	printf("call background construction\n");
 	loadimage(&map_image_, _T("assets/map/map0.jpg"));
@@ -41,7 +40,12 @@ void BackGround::ChoosePlants() {
 		}
 	}
 	panel_manager.push_back(one_row);
-	int select_max = min(bar_.size(), CARD_NUM);
+	/**
+	 * FIXME:
+	 * this line is changed
+	 */
+	int select_max = 0;
+	// int select_max = std::min(bar_.size(), (size_t)CARD_NUM);
 	bar_.clear();
 	while (select_max) {
 		putimage(0, 0, x_size_, y_size_, &map_image_, x, 0);

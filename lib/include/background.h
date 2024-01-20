@@ -1,12 +1,35 @@
 #pragma once
 #include <unordered_set>
 #include <random>
-#include <graphics.h>
+// #include <graphics.h>
 #include <unordered_map>
 #include <string>
 #include <vector>
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
+#include <Windows.h>
 
+#include "../../gui/lib/include/app.h"
+/**
+ * FIXME:
+ * 
+ */
+#define IMAGE std::pair<int,int>
+#define ExMessage std::pair<int,int>
+#define loadimage(a,b) 1
+#define putimage(a,b)  1
+#define getwidth()  first
+#define getheight() first
+#define outtextxy(a,b,c) 1
+#define peekmessage(a,b)1
+#define EX_MOUSE 1
+#define message first
+#define x first
+#define y second
+#define WM_MOUSEMOVE 1
+#define WM_LBUTTONDOWN 1
+#define Resize(a,b,c)1
 #include "unit.h"
 #include "game.h"
 #include "game_parameters.h"
@@ -19,6 +42,11 @@ class BackGround {
 public:
 	Game* gm_;
 	int map_id_ = 0;
+	/**
+	 * FIXME: app shouldn't be nullptr
+	 * 
+	 */
+	Vulkan::App* app_=nullptr;
 public:
 	std::mt19937 gen_;
 	std::unordered_set<Unit*> units_;
