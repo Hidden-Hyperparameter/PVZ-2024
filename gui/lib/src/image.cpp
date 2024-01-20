@@ -12,10 +12,14 @@ Image::Image(Command* commander,int window_x,int window_y,int x_size,int y_size,
     float x_size_normalized_=(float)x_size_/window_x;
     float y_normalized_=(float)y_pos/window_y;
     float y_size_normalized_=(float)y_size_/window_y;
-    vertexs_[0].pos={x_normalized_-x_size_normalized_,y_normalized_-y_size_normalized_};
-    vertexs_[1].pos={x_normalized_+x_size_normalized_,y_normalized_-y_size_normalized_};
-    vertexs_[2].pos={x_normalized_+x_size_normalized_,y_normalized_+y_size_normalized_};
-    vertexs_[3].pos={x_normalized_-x_size_normalized_,y_normalized_+y_size_normalized_};
+    // vertexs_[0].pos={2*x_normalized_-1,2*y_normalized_-1};
+    // vertexs_[1].pos={2*x_normalized_+2*x_size_normalized_-1,2*y_normalized_-1};
+    // vertexs_[2].pos={2*x_normalized_+2*x_size_normalized_-1,2*y_normalized_+2*y_size_normalized_-1};
+    // vertexs_[3].pos={2*x_normalized_-1,2*y_normalized_+2*y_size_normalized_-1};
+    vertexs_[0].pos={-1,-1};
+    vertexs_[3].pos={-1,2*y_size_normalized_-1};
+    vertexs_[2].pos={2*x_size_normalized_-1,2*y_size_normalized_-1};
+    vertexs_[1].pos={2*x_size_normalized_-1,-1};
     device_->CreateBuffer(vertex_buff_,vertex_buff_memory_,VK_BUFFER_USAGE_VERTEX_BUFFER_BIT,vertexs_);
     device_->CreateBuffer(index_buff_,index_buff_memory_,VK_BUFFER_USAGE_INDEX_BUFFER_BIT,index);
     //descriptot 
@@ -32,7 +36,7 @@ void Image::Draw(const VkCommandBuffer& command_buff,int curr_frame_){
     vkCmdBindVertexBuffers(command_buff,0,1,&vertex_buff_,& offser);
     vkCmdBindIndexBuffer(command_buff,index_buff_,offser,VK_INDEX_TYPE_UINT16);
     PushConst push;
-    push.offset=glm::vec2{(float)x_pos_/WINDOW_Width,(float)y_pos_/WINDOW_Height};
+    push.offset=glm::vec2{(float)(2.0f*x_pos_)/WINDOW_Width,(float)(2.0f*y_pos_)/WINDOW_Height};
     // printf("push constant has offeset %lf and %lf\n",push.offset[0],push.offset[1]);
     /**
      * If the line below gives your an error such that @param pipe_lay_ is nulllptr, then check whether you have initialized @param pipe_lay_ after the creation of image. Due to the problems(at the beginning, @param pipe_lay_ isn't initialized), this initialization of @param pipe_lay_ can't be added in the constructor.

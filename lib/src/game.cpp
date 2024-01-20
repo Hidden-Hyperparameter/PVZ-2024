@@ -60,7 +60,7 @@ void Game::LoadMultiple(const std::string& unit_name) {
 void Game::LoadPlant(const std::string& name) {
 	LoadMultiple(name);
 	plant_available.push_back(name);
-	image_dict[name+"_card"]={app_->LoadOneImage("cards/"+name+".png")};
+	image_dict[name+"_card"]={LoadOneImageNoFailure("cards/"+name+".png")};
 }
 void Game::LoadZombie(const std::string& name) {
 	LoadMultiple(name);
@@ -103,16 +103,20 @@ void Game::Init() {
 	 * uncomment this line
 	 */
 	// bkg_->ChoosePlants();
+	for(auto pl:plant_available){
+		bkg_->bar_.push_back(pl);
+	}
 }
 void Game::Update() {
-	bkg_->UserClick();
 	auto now=app_->GetTime();
-	if(now>render_time_* Parameters::RENDER_TIME){
+	// printf("now is %d, next time is %d\n",now,(render_time_+1)* Parameters::RENDER_TIME);
+	if(now>(render_time_+1)* Parameters::RENDER_TIME){
 		app_->DrawFrame();
 		render_time_=now/Parameters::RENDER_TIME;
 		bkg_->Show();
+		bkg_->UserClick();
 	}
-	if(now <= time_ * Parameters::UPDATE_TIME){
+	if(now <= (time_+1) * Parameters::UPDATE_TIME){
 		return;
 	}
 	time_=now/Parameters::UPDATE_TIME;

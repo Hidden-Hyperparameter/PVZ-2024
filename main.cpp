@@ -9,6 +9,8 @@ int main()
 	// Vulkan::App app;
 	// app.run();
 	// printf("Hellp,worild!\n");
+
+	// freopen("../../debug.log","w",stdout);
 	Game g;
 	g.Start();
 	// Game g;

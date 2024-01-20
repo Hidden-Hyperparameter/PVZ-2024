@@ -32,6 +32,7 @@ class App{
     
     public:
         App(int w,int h,const std::string& name);
+        std::pair<bool,std::pair<int,int> > Mouse();
         GLFWwindow* GetGLFWindow()const;
         static const int LOAD_IMAGE_FAIL=-1;
         std::unordered_map<int,Image*> images_;

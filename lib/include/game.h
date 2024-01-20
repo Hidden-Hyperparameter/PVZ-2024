@@ -52,6 +52,13 @@ public:
 	void Lose();//show lose graphics effects
 	void LoadAll();
 	void Start();
+	/**
+	 * @brief draw an image with **left-top** position being (xp,yp)
+	 * 
+	 * @param xp 
+	 * @param yp 
+	 * @param image 
+	 */
 	void Draw(int xp,int yp,int image);
 	std::string ChangeName(const std::string &name) const ;
 	int LoadOneImage(const std::string& name);

@@ -50,6 +50,7 @@ std::tuple<int,int,FileHelper::IMAGE*> FileHelper::LoadImage(const std::string& 
         std::cout<<"Loading image named ["<<new_name<<"]..."<<std::endl;
         IMAGE* pixel=stbi_load(new_name.c_str(),&tex_width,&tex_height,&tex_channel,STBI_rgb_alpha);
         if(pixel){
+            std::cout<<"Succeeded.\n";
             return std::make_tuple(tex_width,tex_height,pixel);
         }
         // uint64_t image_size=tex_height*tex_width*4;

@@ -11,6 +11,12 @@ void App::run(){
         DrawFrame();
     }
 }
+std::pair<bool,std::pair<int,int> > App::Mouse(){
+    int state = glfwGetMouseButton(window_->window_, GLFW_MOUSE_BUTTON_LEFT);
+    double xpos,ypos;
+    glfwGetCursorPos(window_->window_, &xpos, &ypos);
+    return std::make_pair(state==GLFW_PRESS,std::make_pair(xpos,ypos));
+}
 void App::Add(int xp,int yp,int im){
     assert(images_.count(im) && "This image isn't initialzed yet");
     images_[im]->Update(xp,yp);
@@ -66,10 +72,15 @@ void App::DrawFrame(){
     auto command_buff=commander_->StartCommandBuffer(curr_frame_);
     for(auto im:have_to_draw){
         images_[im]->Draw(command_buff,curr_frame_);
+        // printf("draw image %d\n",im);
     }
     commander_->SubmitCommandBuffer(curr_frame_);
     curr_frame_++;
     if(curr_frame_==MAX_FRAMES_IN_FLIGHT)curr_frame_=0;
+    /**
+     * This line: clear or not?
+     * 
+     */
     // have_to_draw.clear();
 }
 

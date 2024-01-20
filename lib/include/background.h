@@ -17,18 +17,7 @@
  */
 #define IMAGE std::pair<int,int>
 #define ExMessage std::pair<int,int>
-#define loadimage(a,b) 1
-#define putimage(a,b)  1
-#define getwidth()  first
-#define getheight() first
 #define outtextxy(a,b,c) 1
-#define peekmessage(a,b)1
-#define EX_MOUSE 1
-#define message first
-#define x first
-#define y second
-#define WM_MOUSEMOVE 1
-#define WM_LBUTTONDOWN 1
 #define Resize(a,b,c)1
 #include "unit.h"
 #include "game.h"
@@ -58,10 +47,10 @@ public:
 public:
 	//graphics constants(unit: pixels)
 	const int CHOOSER_X = 100, CHOOSER_Y = 0;
-	const int CARD_START_X = 175, CARD_START_Y = 7;
+	const int CARD_START_X = 130, CARD_START_Y = 7;
 	const int CARD_END_X = 610;
 	const int CARD_NUM = 8;
-	const int CARD_X = 62, CARD_Y = 70;
+	const int CARD_X = 54, CARD_Y = 70;
 	const int SUN_CNT_X = 130, SUN_CNT_Y = 65;//the place for showing current sun counts
 	const int GRID_START_X = 240, GRID_START_Y = 90;//left-top corner
 	const int GRID_END_X = 980, GRID_END_Y = 570;//right-bottom corner

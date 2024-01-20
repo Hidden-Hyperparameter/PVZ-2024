@@ -3,12 +3,12 @@
 #define __PARAMETERS__
 class Parameters {
 public://general
-	static const int SUN_TIME            = 200;   //time interval for background to generate sun
-	static const int INIT_ZOMBIE_TIME    = 10;    //initial time for begin generating zombie
+	static const int SUN_TIME            = 2000000;   //time interval for background to generate sun
+	static const int INIT_ZOMBIE_TIME    = 1000000;    //initial time for begin generating zombie
 	static const int ZOMBIE_TIME         = 100;	//time interval for generating zombie
 	static const int SUN_STEPS           = 400;	    //total steps for sun to fall down. The more this is, the slower the sun will fall
 	static const int ZOMBIE_STEPS        = 400;     //total steps for zombie to reach left side
-	static const int RENDER_TIME         = 80;		//(physical) time interval between updates, unit is milliseconds
+	static const int RENDER_TIME         = 40;		//(physical) time interval between updates, unit is milliseconds
 	static const int UPDATE_TIME         = 200;		//(physical) time interval between updates, unit is milliseconds
 	static const int PLANT_DEFAULT_LIFE  = 100;		//normal plant life
 	static const int ZOMBIE_DEFAULT_LIFE = 100;		//normal zombie life

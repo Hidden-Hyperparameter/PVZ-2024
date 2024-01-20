@@ -13,6 +13,7 @@ BackGround::BackGround( Game* gm,int id) : gen_(time(NULL)),  gm_(gm),map_id_(id
 	}
 }
 void BackGround::ChoosePlants() {
+	/*
 	int x = 0, i = 0, mv = (x_size_ - gm_->x_size_) / STEPS;
 	while (i < STEPS) {
 		x += mv;
@@ -33,10 +34,10 @@ void BackGround::ChoosePlants() {
 		}
 	}
 	panel_manager.push_back(one_row);
-	/**
-	 * FIXME:
-	 * this line is changed
-	 */
+	//
+	//FIXME:
+	//this line is changed. See the commented line
+	//
 	int select_max = 0;
 	// int select_max = std::min(bar_.size(), (size_t)CARD_NUM);
 	bar_.clear();
@@ -76,19 +77,20 @@ void BackGround::ChoosePlants() {
 		Sleep(Parameters::UPDATE_TIME);
 	}
 	x_size_ = gm_->x_size_;//reset x size, so that zombies will appear at real place
+
+	*/
 }
 
 void BackGround::InitPrice() {
-	units_price_["peashooter"] = 100;
-	units_price_["sunflower"] = 50;
+	units_price_["peashooter"] = 0;
+	units_price_["sunflower"] = 0;
 }
 void BackGround::Show(){
 	gm_->Draw(0, 0, gm_->GetImage("map"));
 	gm_->Draw(CHOOSER_X, CHOOSER_Y, gm_->GetImage("chooser"));
 	// outtextxy(SUN_CNT_X, SUN_CNT_Y, Helper::NumToWchar(sun_cnt_));//show sun numbers
 	for (int i = 0; i < bar_.size();i++) {
-		gm_->Draw(CARD_START_X + CARD_X * i, CARD_START_Y,
-			gm_->GetCardImage(bar_[i]));
+		gm_->Draw(CARD_START_X + CARD_X * i, CARD_START_Y,gm_->GetCardImage(bar_[i]));
 	}
 	//show units as well as erasing the garbage(died) units.
 	for (auto it = units_.begin(); it != units_.end();) {
@@ -119,21 +121,16 @@ void BackGround::UpdateUnits() {
 	}
 }
 void BackGround::UserClick() {
-	bool rst = peekmessage(&msg_,EX_MOUSE);//get user message
-	if (!rst)return;//no mouse actions
-	if (msg_.message == WM_MOUSEMOVE) {//user move mouse
-		if (placing_plant_.first) {//the recently-bought plant is following the mouse.
-			placing_plant_.second->MoveTo(msg_.x, msg_.y-GRID_Y/3);
-		}
-		return;
-	}
-	if (msg_.message == WM_LBUTTONDOWN) {//user click
-		printf("user click %d,%d\n", msg_.x, msg_.y);
-		if ((msg_.x >= GRID_START_X) && (msg_.x <= GRID_END_X) && (msg_.y >= GRID_START_Y) && (msg_.y <= GRID_END_Y)) {
+	bool press;
+	int xp,yp;
+	std::tie(press,std::tie(xp,yp)) = gm_->app_->Mouse();
+	if (press) {//user click
+		printf("user click %d,%d\n", xp,yp);
+		if ((xp >= GRID_START_X) && (xp <= GRID_END_X) && (yp>= GRID_START_Y) && (yp <= GRID_END_Y)) {
 			if (placing_plant_.first) {//place the plant onto grid
 				printf("user click grid\n");
-				int x_index = (msg_.x - GRID_START_X) / GRID_X;
-				int y_index = (msg_.y - GRID_START_Y) / GRID_Y;
+				int x_index = (xp - GRID_START_X) / GRID_X;
+				int y_index = (yp - GRID_START_Y) / GRID_Y;
 				if (grid_manager_[x_index][y_index] == nullptr) {//no other plants exist on the grid
 					placing_plant_.first = false;//finish place
 					placing_plant_.second->is_moving_ = false;
@@ -151,14 +148,14 @@ void BackGround::UserClick() {
 				}
 			}
 		}
-		if ((msg_.x >= CARD_START_X) && (msg_.x <= CARD_END_X) && (msg_.y >= CARD_START_Y) && (msg_.y <= CARD_Y)) {//select plant
-			printf("user click chooser\n");
-			int index = ((msg_.x-CARD_START_X) / CARD_X) ;
+		if ((xp >= CARD_START_X) && (xp <= CARD_END_X) && (yp >= CARD_START_Y) && (yp <= CARD_Y)) {//select plant
+			int index = ((xp-CARD_START_X) / CARD_X) ;
+			printf("user click chooser index %d\n",index);
 			if (index >= bar_.size())return;//click on empty bar
 			int price = units_price_[bar_[index]];
 			if (sun_cnt_ >= price) {
 				sun_cnt_ -= price;
-				Plant* un = MakePlant(bar_[index], msg_.x, msg_.y);//make a new plant
+				Plant* un = MakePlant(bar_[index], xp, yp);//make a new plant
 				units_.insert(un);
 				placing_plant_ = std::make_pair(true, un);//let it follow mouse in future iterations
 			}
@@ -166,14 +163,18 @@ void BackGround::UserClick() {
 		}
 		for (auto it : units_) {
 			if (it->name_ != "sun")continue;
-			if (abs(it->x_ - msg_.x) <= sun_size_.first && abs(it->y_ - msg_.y) <= sun_size_.second) {//collect sun 
+			if (abs(it->x_ - xp) <= sun_size_.first && abs(it->y_ - yp) <= sun_size_.second) {//collect sun 
 				it->Removed();
 				units_.erase(it);
 				sun_cnt_ += 25;//single sun value, never changed
 				break;
 			}
 		}
-		
+	}else {//user move mouse
+		if (placing_plant_.first) {//the recently-bought plant is following the mouse.
+			printf("plant move to %d,%d\n",xp,yp-GRID_Y/3);
+			placing_plant_.second->MoveTo(xp, yp-GRID_Y/3);
+		}
 	}
 }
 Plant* BackGround::MakePlant(std::string name, int x, int y) {
