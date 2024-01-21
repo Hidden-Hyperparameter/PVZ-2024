@@ -10,7 +10,10 @@ int main()
 	// app.run();
 	// printf("Hellp,worild!\n");
 
-	freopen("../../debug.log","w",stdout);
+	// freopen("../../debug.log","w",stdout);
+	#ifdef _WIN32
+	printf("Program starting at %s\n",__TIME__);
+	#endif
 	Game g;
 	g.Start();
 	// Game g;

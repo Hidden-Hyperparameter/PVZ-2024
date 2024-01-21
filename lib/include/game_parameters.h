@@ -21,6 +21,8 @@ public://plant
 	static const int SUNFLOWER_GEN_SUN = 100;
 public://zombies
 	static const int ZOMBIE_EAT = 20;
+public://graphics effect
+	static const int ZOMBIE_DIE_PER_FRAME_TIME=5;
 };
 #endif
 /*		notes:

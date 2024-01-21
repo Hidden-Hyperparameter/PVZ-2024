@@ -40,14 +40,28 @@ void Zombie::Attack() {
 void Zombie::DeduceLife(int amount) {
 	if (life_ < 0)return;
 	life_ -= amount;
+	if(life_<0){
+		head_id_=gm_->MakeObject("zombie/head");
+	}
 }
 void Zombie::Show() {
 	if (life_ < 0) {//show dead images
+		die_effect_curr_time++;
+		bool do_update=false;
+		if(die_effect_curr_time>=DIE_EFFECT_TIME){
+			die_effect_curr_time=0;
+			do_update=true;
+		}
 		bool head_show = false,body_show=false;
-		if (die_head_status < gm_->GetImageNum(name_+"/head")-1)
-			head_show=true,gm_->Draw(x_, y_, id_,"zombie/head", die_head_status),die_head_status++;
-		if (die_body_status < gm_->GetImageNum(name_+"/body")-1)
-			body_show=true,gm_->Draw(x_, y_, id_,"zombie/body", die_head_status),die_body_status++;
+		if (die_head_status < gm_->GetImageNum(name_+"/head")-1){
+			head_show=true,gm_->Draw(x_, y_, head_id_,"zombie/head", die_head_status);
+			die_head_status+=do_update;
+
+		}
+		if (die_body_status < gm_->GetImageNum(name_+"/body")-1){
+			body_show=true,gm_->Draw(x_, y_, id_,"zombie/body", die_head_status);
+			die_body_status+=do_update;
+		}
 		if(!head_show&&!body_show) Removed();//remove after shown
 	}
 	else {
