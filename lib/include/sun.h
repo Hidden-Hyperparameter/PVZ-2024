@@ -12,7 +12,10 @@ public:
 	static const int SIZE = 10;
 	const int MAX_Y;
 public:
-	//void Fall();
 	Sun(int xp, int yp, int mv, Game* gm, BackGround* bkg);
+	/**
+	 * @brief update position and move
+	 * 
+	 */
 	void Update() override;
 };

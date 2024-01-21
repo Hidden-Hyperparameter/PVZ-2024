@@ -10,8 +10,8 @@ BackGround::BackGround( Game* gm,int id) : gen_(time(NULL)),  gm_(gm),map_id_(id
 	}
 }
 void BackGround::InitPrice() {
-	units_price_["peashooter"] = 100;
-	units_price_["sunflower"] = 50;
+	units_price_["peashooter"] = 0;
+	units_price_["sunflower"] = 0;
 	units_price_["cherrybomb"]= 0;
 }
 void BackGround::ChoosePlants() {
@@ -127,7 +127,7 @@ void BackGround::CreateSun(){
 void BackGround::CreateZombie() {
 	auto row = std::uniform_int_distribution<int>(0, GRID_Y_NUM-1);
 	int rw = row(gen_);
-	units_.insert(new Zombie(GRID_END_X/2,GRID_START_Y+(rw - 1) * GRID_Y,(GRID_END_X-GRID_START_X)/ZOMBIE_STEPS,
+	units_.insert(new Zombie(GRID_END_X,GRID_START_Y+(rw - 1) * GRID_Y,(GRID_END_X-GRID_START_X)/ZOMBIE_STEPS,
 		gm_,this,rw));
 }
 void BackGround::UpdateUnits() {
@@ -169,6 +169,7 @@ void BackGround::UserClick() {
 			int index = ((xp-CARD_START_X) / CARD_X) ;
 			// printf("user click chooser index %d\n",index);
 			if (index >= bar_.size())return;//click on empty bar
+			assert(units_price_.count(bar_[index].first) && "The new plant haven't been inserted to the chooser. Please see the InitPrice function");
 			int price = units_price_[bar_[index].first];
 			if (sun_cnt_ >= price) {
 				sun_cnt_ -= price;

@@ -1,4 +1,9 @@
 #pragma once
+/**
+ * @file game_parameters.h
+ * @brief this header file contains the parameters of the game.
+ * 
+ */
 #ifndef __PARAMETERS__
 #define __PARAMETERS__
 class Parameters {

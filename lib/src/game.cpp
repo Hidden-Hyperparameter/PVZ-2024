@@ -1,27 +1,4 @@
 #include "game.h"
-Game::Game() :bkg_(new BackGround(this)),gen(time(NULL)){
-	y_size_ = bkg_->y_size_;
-	LoadAll();
-}
-std::pair<int,int> Game::LoadAndGetImageSize(const std::string& name)const{
-	return app_->LoadAndGetImageSize(ChangeName(name));
-}
-std::string Game::ChangeName(const std::string &name) const {
-	std::string final_name;
-	if(name[0]=='/'){
-        final_name="assets"+name;
-    }else{
-        final_name="assets/"+name;
-    }
-	return final_name;
-}
-
-int Game::LoadOneImage(const std::string& name){
-	return app_->LoadOneImage(ChangeName(name));
-}
-int Game::LoadOneImageNoFailure(const std::string& name){
-	return app_->LoadOneImageNoFailure(ChangeName(name));
-}
 void Game::LoadAll(){
 	auto size=LoadAndGetImageSize("map/map0.jpg");
 	assert(size.first);
@@ -41,6 +18,31 @@ void Game::LoadAll(){
 //zombies
 	LoadZombie("zombie");
 }
+
+Game::Game() :bkg_(new BackGround(this)),gen(time(NULL)){
+	y_size_ = bkg_->y_size_;
+	LoadAll();
+}
+std::pair<int,int> Game::LoadAndGetImageSize(const std::string& name)const{
+	return app_->LoadAndGetImageSize(ChangeName(name));
+}
+std::string Game::ChangeName(const std::string &name) const {
+	std::string final_name;
+	if(name[0]=='/'){
+        final_name="assets"+name;
+    }else{
+        final_name="assets/"+name;
+    }
+	return final_name;
+}
+
+Vulkan::App::image_t Game::LoadOneImage(const std::string& name){
+	return app_->LoadOneImage(ChangeName(name));
+}
+Vulkan::App::image_t Game::LoadOneImageNoFailure(const std::string& name){
+	return app_->LoadOneImageNoFailure(ChangeName(name));
+}
+
 
 void Game::LoadMultiple(const std::string& unit_name) {
 	assert(!image_dict.count(unit_name) && "Must load each unit exactly one time");
@@ -103,7 +105,6 @@ void Game::Init() {
 	//show starter page
 
 	bkg_->ChoosePlants();
-
 }
 Vulkan::App::object_t Game::MakeObject(const std::string& name){
 	if(name==""){
@@ -142,12 +143,9 @@ void Game::Update() {
 	bkg_->UpdateUnits();
 }
 void Game::Lose() {
+	in_game_ = false;
 	/**
 	 * TODO: add the lose effect here
 	 * 
 	 */
-	in_game_ = false;
-	clearrectangle(0, 0, x_size_, y_size_);
-	outtextxy(x_size_ / 2, y_size_ / 2, __T("You Lose"));
-	Sleep(5000);
 }

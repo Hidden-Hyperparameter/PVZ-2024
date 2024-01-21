@@ -19,11 +19,46 @@ public:
 	BackGround* bkg_;
 	Game* gm_;
 public:
+/**
+ * @brief Construct a new Unit object without specifying name
+ * 
+ * @param xp x-pos
+ * @param yp y-pos
+ * @param gm game pointer
+ * @param bkg background pointer
+ */
 	Unit(int xp, int yp, Game* gm, BackGround* bkg) ;
+/**
+ * @brief Construct a new Unit object given the name
+ * 
+ * @param xp x-pos
+ * @param yp y-pos
+ * @param gm game pointer
+ * @param bkg background pointer
+ * @param name unit name
+ */
 	Unit(int xp, int yp, Game* gm, BackGround* bkg,const std::string& name) ;
-		
-	virtual void Show();//put image on screen
-	virtual void Update();//update status(containing the image status)
-	virtual void Removed();//note that this is removed
+/**
+ * @brief put image on screen
+ * 
+ */
+	virtual void Show();
+/**
+ * @brief update status(like move), including the image status
+ * 
+ */
+	virtual void Update();
+/**
+ * @brief to mark this unit object as removed
+ * @attention after calling this function, the unit will still be put on screen ONCE.
+ * 
+ */
+	virtual void Removed();
+/**
+ * @brief Change the postion to new one
+ * 
+ * @param x x-coord
+ * @param y y-coord
+ */
 	void MoveTo(int x, int y);
 };

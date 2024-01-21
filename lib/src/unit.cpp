@@ -8,6 +8,7 @@ Unit::Unit(int xp, int yp, Game* gm, BackGround* bkg,const std::string& name):x_
 			id_=gm->MakeObject(name);
 		}
 void Unit::Show() {
+	std::cout<<"Showing unit "<<name_<<std::endl;
 	gm_->Draw(x_,y_,id_,name_,image_status_);
 }
 void Unit::Update() {
