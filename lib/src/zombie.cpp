@@ -37,14 +37,21 @@ void Zombie::Attack() {
 		eating_plant_ = nullptr;
 	}
 }
-void Zombie::DeduceLife(int amount,Parameters::Peatype type) {
+void Zombie::DeduceLife(int amount,const std::string& name) {
 	if (life_ < 0) {
 		return;
+	}
+	if(name=="explode"){
+		life_=0;
+		explode_=true;
+		return ;
 	}
 	life_ -= amount;
 	if(life_<0){
 		head_id_=gm_->MakeObject("zombie/head");
 	}
+	//explode effect
+	
 }
 void Zombie::Show() {
 	if (life_ < 0) {//show dead images
@@ -54,14 +61,21 @@ void Zombie::Show() {
 			die_effect_curr_time=0;
 			do_update=true;
 		}
+		if(explode_){
+			if(explode_status_==gm_->GetImageNum(name_+"/explode")-1){
+				Removed();
+			}
+			gm_->Draw(x_,y_,id_,name_+"/explode",explode_status_);
+			explode_status_+=do_update;
+			return;
+		}
 		bool head_show = false,body_show=false;
 		if (die_head_status < gm_->GetImageNum(name_+"/head")-1){
-			head_show=true,gm_->Draw(x_, y_, head_id_,"zombie/head", die_head_status);
+			head_show=true,gm_->Draw(x_, y_, head_id_,name_+"/head", die_head_status);
 			die_head_status+=do_update;
-
 		}
 		if (die_body_status < gm_->GetImageNum(name_+"/body")-1){
-			body_show=true,gm_->Draw(x_, y_, id_,"zombie/body", die_head_status);
+			body_show=true,gm_->Draw(x_, y_, id_,name_+"/body", die_body_status);
 			die_body_status+=do_update;
 		}
 		if(!head_show&&!body_show) Removed();//remove after shown

@@ -5,6 +5,7 @@
 #include "peashooter.h"
 #include "sunflower.h"
 //Bullets
+#include "bullet.h"
 #include "pea.h"
 //Zombies
 #include "zombie.h"

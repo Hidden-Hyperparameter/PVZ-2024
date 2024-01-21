@@ -3,7 +3,7 @@
 #define __PARAMETERS__
 class Parameters {
 public://general
-	enum class Peatype{single, range, none};
+
 	static const int SUN_TIME            = 200;   //time interval for background to generate sun
 	static const int INIT_ZOMBIE_TIME    = 0;    //initial time for begin generating zombie
 	static const int ZOMBIE_TIME         = 100;	//time interval for generating zombie
@@ -22,6 +22,8 @@ public://plant
 	static const int SUNFLOWER_GEN_SUN = 100;
 public://zombies
 	static const int ZOMBIE_EAT = 20;
+public://bullets
+	
 public://graphics effect
 	static const int ZOMBIE_DIE_PER_FRAME_TIME=5;
 };

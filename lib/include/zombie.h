@@ -14,9 +14,11 @@ public:
 	Unit* eating_plant_ = nullptr;
 	int FIRE = Parameters::ZOMBIE_EAT;
 	Vulkan::App::object_t head_id_;
+	bool explode_=false;
+	int explode_status_;
 public:
 	Zombie(int xp, int yp,int left_speed, Game* gm, BackGround* bkg, int row,int maxlife=Parameters::ZOMBIE_DEFAULT_LIFE);Zombie::Zombie(int xp, int yp,int left_speed, Game* gm, BackGround* bkg, const std::string& name, int row,int maxlife=Parameters::ZOMBIE_DEFAULT_LIFE);
-	void DeduceLife(int amount);
+	void DeduceLife(int amount,const std::string& name="pea");
 	void Update()override;
 	void Show()override;
 	void Attack();//eat plant
