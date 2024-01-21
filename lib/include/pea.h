@@ -9,8 +9,9 @@ class Pea:public Unit {
 public:
 	const int ATTACK_RANGE = Parameters::PEA_MOVE_STEP;
 	const int FIRE = Parameters::PEA_FIRE;
+	Parameters::Peatype BULLETTYPE;
 public:
-	Pea(int xp, int yp, Game* gm, BackGround* bkg,int row, int mxx);
+	Pea(int xp, int yp, Parameters::Peatype type,Game* gm, BackGround* bkg,int row, int mxx);
 	const int move_step_;
 	const int MAX_X;
 	void Update()override;
