@@ -16,6 +16,7 @@ int main()
 	#endif
 	Game g;
 	g.Start();
+	// TEST
 	// Game g;
 	// g.Init();
 	// while(g.in_game_){
