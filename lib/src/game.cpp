@@ -3,8 +3,8 @@ Game::Game() :bkg_(new BackGround(this)),gen(time(NULL)){
 	y_size_ = bkg_->y_size_;
 	LoadAll();
 }
-std::pair<int,int> Game::GetImageSize(const std::string& name)const{
-	return app_->GetImageSize(ChangeName(name));
+std::pair<int,int> Game::LoadAndGetImageSize(const std::string& name)const{
+	return app_->LoadAndGetImageSize(ChangeName(name));
 }
 std::string Game::ChangeName(const std::string &name) const {
 	std::string final_name;
@@ -23,7 +23,7 @@ int Game::LoadOneImageNoFailure(const std::string& name){
 	return app_->LoadOneImageNoFailure(ChangeName(name));
 }
 void Game::LoadAll(){
-	auto size=GetImageSize("map/map0.jpg");
+	auto size=LoadAndGetImageSize("map/map0.jpg");
 	assert(size.first);
 	std::tie(bkg_->x_size_,bkg_->y_size_)=std::tie(x_size_,y_size_)=size;
 	app_=new Vulkan::App(x_size_,y_size_,"PVZ-2024");	
@@ -72,8 +72,8 @@ void Game::LoadZombie(const std::string& name) {
 const int Game::GetImageNum(const std::string& name){
 	return image_dict[name].size();
 }
-void Game::Draw(int xp,int yp,int im){
-	app_->Add(xp,yp,im);
+void Game::Draw(int xp,int yp,int im,int id){
+	app_->AddToDrawList(xp,yp,im,id);
 }
 int Game::GetImage(const std::string& name,int frame){
 	return image_dict[name][frame];

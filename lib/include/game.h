@@ -40,7 +40,16 @@ public:
 	unsigned long long nxt_time_sun = 0;//next time generating sun
 	unsigned long long nxt_time_zombie = Parameters::INIT_ZOMBIE_TIME;//next time generating zombie
 	bool in_game_ = true;
+	/**
+	 * @brief (unit_name,frame) ->image id
+	 * images are unique.
+	 */
 	std::unordered_map<std::string,std::vector<int> > image_dict;
+	/**
+	 * @brief (unit_name,frame) + unit_id ->image id
+	 * images are not unique, use copy constructor
+	 */
+	std::unordered_map<std::tuple<std::string,int,int>,int> real_image_dict;
 	std::vector<std::string> plant_available;
 public:
 	const int GetImageNum(const std::string& name);
@@ -59,7 +68,7 @@ public:
 	 * @param yp 
 	 * @param image 
 	 */
-	void Draw(int xp,int yp,int image);
+	void Draw(int xp,int yp,int image,int id);
 	std::string ChangeName(const std::string &name) const ;
 	int LoadOneImage(const std::string& name);
 	int LoadOneImageNoFailure(const std::string& name);
@@ -68,5 +77,5 @@ public:
 	void LoadZombie(const std::string& unit_name);
 	int GetImage(const std::string& name,int frame=0);
 	int GetCardImage(const std::string& name);
-	std::pair<int,int> GetImageSize(const std::string &name)const;
+	std::pair<int,int> LoadAndGetImageSize(const std::string &name)const;
 };

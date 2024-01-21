@@ -10,6 +10,7 @@
 #include "file_helper.h"
 #include "command.h"
 #include "image.h"
+#include "object.h"
 #include <glm/glm.hpp>
 #include <array>
 #include <chrono>
@@ -23,19 +24,18 @@ namespace Vulkan{
 class PipeLine;
 class Command;
 class Image;
-struct Vertex;
-struct PushConst{
-    glm::vec2 offset;
-    alignas(16)glm::vec3 color;
-};
+class Object;
+
 class App{
-    
     public:
+        typedef int image_t;
+        typedef int object_t;
         App(int w,int h,const std::string& name);
         std::pair<bool,std::pair<int,int> > Mouse();
         GLFWwindow* GetGLFWindow()const;
         static const int LOAD_IMAGE_FAIL=-1;
-        std::unordered_map<int,Image*> images_;
+        std::unordered_map<image_t,Image*> images_;
+        std::unordered_map<object_t,Object*> objects_;
         // std::vector<Image*> images_;
         /**
          * @brief the total number of general-meaning "images" that is able to be shown up simontaneously on screen.
@@ -46,7 +46,8 @@ class App{
         const std::pair<uint32_t,uint32_t> GetImageSize(int id);
         const int MAX_FRAMES_IN_FLIGHT=2;
         uint32_t curr_frame_=0;
-       uint32_t image_cnt_=0;
+        image_t image_cnt_=0;
+        object_t object_cnt_=0;
         // void CreateLogicDevice();
         // bool IsDeviceSuitable(VkPhysicalDevice device);
         void DrawFrame();
@@ -56,9 +57,10 @@ class App{
          * @param name image name, not contain "asset" path
          * @return int id(the id in app image storage)
          */
-        int LoadOneImage(const std::string& name);
-        int LoadOneImageNoFailure(const std::string& name);
-        static std::pair<int,int>GetImageSize(const std::string& name);
+        image_t LoadOneImage(const std::string& name);
+        image_t LoadOneImageNoFailure(const std::string& name);
+        object_t AddOneObject(image_t im=0);
+        static std::pair<int,int>LoadAndGetImageSize(const std::string& name);
         void PollEvent();
         bool IsRunning()const;
         // void CreateBuffer(VkDeviceSize size_,VkBufferUsageFlags usage, VkMemoryPropertyFlags props,VkBuffer& buf,VkDeviceMemory& buf_mem);
@@ -67,7 +69,7 @@ class App{
         // SwapChainSupportDetail QuerySwapChain(VkPhysicalDevice device);
         VkImage tex_image;
         VkDeviceMemory tex_image_mem;
-        std::unordered_multiset<int> have_to_draw; 
+        std::unordered_set<object_t> have_to_draw; 
         //Validation Layers
         const std::vector<const char*> validation_layers_={
             "VK_LAYER_KHRONOS_validation"
@@ -91,8 +93,8 @@ class App{
     public:
         App();
         void run();
-        void Add(int xp,int yp,int im);
-        void Remove(int im);
+        void AddToDrawList(int xp,int yp,object_t obj,image_t im);
+        void RemoveFromDrawList(object_t obj);
         void Update();
 };
 

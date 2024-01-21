@@ -17,13 +17,19 @@ std::pair<bool,std::pair<int,int> > App::Mouse(){
     glfwGetCursorPos(window_->window_, &xpos, &ypos);
     return std::make_pair(state==GLFW_PRESS,std::make_pair(xpos,ypos));
 }
-void App::Add(int xp,int yp,int im){
+void App::AddToDrawList(int xp,int yp,object_t obj,image_t im){
     assert(images_.count(im) && "This image isn't initialzed yet");
-    images_[im]->Update(xp,yp);
-    have_to_draw.insert(im);
+    assert(objects_.count(obj) && "This object haven' been added yet");
+    objects_[obj]->descriptor_=images_[im]->descriptot_;
+    objects_[obj]->Update(xp,yp);
+    have_to_draw.insert(obj);
 }
-int App::LoadOneImage(const std::string& name){
-    auto extent=GetImageSize(name);
+App::object_t App::AddOneObject(App::image_t im){
+    objects_[object_cnt_]=new Object(this,images_[im]);
+    return object_cnt_++;
+}
+App::image_t App::LoadOneImage(const std::string& name){
+    auto extent=LoadAndGetImageSize(name);
     Image* construct=(new Image(commander_,window_->width,window_->height,extent.first,extent.second));
     construct->pipe_lay_=& commander_->graphics_pipeline_->pipeline_layout_;
     bool res=construct->Load(name);
@@ -34,7 +40,7 @@ int App::LoadOneImage(const std::string& name){
         return LOAD_IMAGE_FAIL;
     }
 }
-int App::LoadOneImageNoFailure(const std::string& name){
+App::image_t App::LoadOneImageNoFailure(const std::string& name){
     auto re=LoadOneImage(name);
     assert(re!=LOAD_IMAGE_FAIL && "Failed to load image. If there are possible failures, please use LoadOneImage instead.");
     return re;
@@ -60,18 +66,18 @@ App::App(int w,int h,const std::string& name):window_(new lve::Window(w,h,name))
     start=TIMER;
     //uniform buffer
 }
-const std::pair<uint32_t,uint32_t> App::GetImageSize(int id){
-    assert(id<images_.size()&& "image index out of bound\n");
+const std::pair<uint32_t,uint32_t> App::GetImageSize(App::image_t id){
+    assert(images_.count(id)&& "image index out of bound\n");
     return std::make_pair(images_[id]->x_size_,images_[id]->y_size_);
 }
-void App::Remove(int im){have_to_draw.erase(im);}
+void App::RemoveFromDrawList(App::object_t obj){have_to_draw.erase(obj);}
 App::App(){
     
 }
 void App::DrawFrame(){    
     auto command_buff=commander_->StartCommandBuffer(curr_frame_);
-    for(auto im:have_to_draw){
-        images_[im]->Draw(command_buff,curr_frame_);
+    for(auto obj:have_to_draw){
+        objects_[obj]->Draw(command_buff,curr_frame_);
         // printf("draw image %d\n",im);
     }
     commander_->SubmitCommandBuffer(curr_frame_);
@@ -101,7 +107,7 @@ bool App::CheckValidationLayer(){
     }
     return true;
 }
-std::pair<int,int> App::GetImageSize(const std::string& name){
+std::pair<int,int> App::LoadAndGetImageSize(const std::string& name){
     auto ret=FileHelper::LoadImage(name);
     // assert(std::get<2>(ret)!=nullptr && "Failed to load image");
     return std::make_pair(std::get<0>(ret),std::get<1>(ret));

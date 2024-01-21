@@ -1,9 +1,11 @@
 #include "unit.h"
 Unit::Unit(int xp, int yp, Game* gm, BackGround* bkg):
 		x_(xp), y_(yp), gm_(gm), bkg_(bkg) {
+			id_=bkg->UnitCnt();
 		}
 Unit::Unit(int xp, int yp, Game* gm, BackGround* bkg,const std::string& name):x_(xp), y_(yp), gm_(gm), bkg_(bkg) ,name_(name){
 			max_image_num_=(gm_->GetImageNum(name_));
+			id_=bkg->UnitCnt();
 		}
 void Unit::Show() {
 	gm_->Draw(x_,y_,gm_->GetImage(name_,image_status_));

@@ -72,6 +72,7 @@ public:
 	std::pair<int, int> sun_size_;//this is used for collecting sun
 public:
 	int sun_cnt_ = 50;//initial sun count is 50
+	int unit_cnt_=0;
 	std::vector<std::string> bar_;//bar_=chooser
 	std::pair<bool, Plant*> placing_plant_;//the plant which is currently bought and following the mouse. If .first is false, then no such plant exist
 public:
@@ -79,6 +80,7 @@ public:
 	BackGround( Game* gm,int id=0);
 	void InitPrice();
 	void ChoosePlants();
+	int UnitCnt();
 //Get image based on name and status. Warning: if status out of bound, then this will abort.
 //Create
 	void CreateSun();

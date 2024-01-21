@@ -2,61 +2,18 @@
 namespace Vulkan
 {
 
-Image::Image(Command* commander,int window_x,int window_y,int x_size,int y_size,int x_pos,int y_pos):device_(commander->device_),commander_(commander),x_size_(x_size),y_size_(y_size),x_pos_(x_pos),y_pos_(y_pos),WINDOW_Width(window_x),WINDOW_Height(window_y){
-    /**
-     * @brief fix that so that the size is no longer 50!
-     * 
-     */
-    vertexs_=init_vertexs;
-    float x_normalized_=(float)x_pos/window_x;
-    float x_size_normalized_=(float)x_size_/window_x;
-    float y_normalized_=(float)y_pos/window_y;
-    float y_size_normalized_=(float)y_size_/window_y;
-    // vertexs_[0].pos={2*x_normalized_-1,2*y_normalized_-1};
-    // vertexs_[1].pos={2*x_normalized_+2*x_size_normalized_-1,2*y_normalized_-1};
-    // vertexs_[2].pos={2*x_normalized_+2*x_size_normalized_-1,2*y_normalized_+2*y_size_normalized_-1};
-    // vertexs_[3].pos={2*x_normalized_-1,2*y_normalized_+2*y_size_normalized_-1};
-    vertexs_[0].pos={-1,-1};
-    vertexs_[3].pos={-1,2*y_size_normalized_-1};
-    vertexs_[2].pos={2*x_size_normalized_-1,2*y_size_normalized_-1};
-    vertexs_[1].pos={2*x_size_normalized_-1,-1};
-    device_->CreateBuffer(vertex_buff_,vertex_buff_memory_,VK_BUFFER_USAGE_VERTEX_BUFFER_BIT,vertexs_);
-    device_->CreateBuffer(index_buff_,index_buff_memory_,VK_BUFFER_USAGE_INDEX_BUFFER_BIT,index);
+Image::Image(Command* commander,int window_x,int window_y,int x_size,int y_size,int x_pos,int y_pos):device_(commander->device_),commander_(commander),x_size_(x_size),y_size_(y_size),is_master_(true){
+
+    
     //descriptot 
 }
-void Image::Draw(const VkCommandBuffer& command_buff,int curr_frame_){
-    vkCmdBindDescriptorSets(
-        command_buff,VK_PIPELINE_BIND_POINT_GRAPHICS,
-        commander_->graphics_pipeline_->pipeline_layout_,
-        0,1,
-        &descriptot_->descriptor_set_[commander_->app_->curr_frame_],
-        0,nullptr
-    );
-    VkDeviceSize offser=0;
-    vkCmdBindVertexBuffers(command_buff,0,1,&vertex_buff_,& offser);
-    vkCmdBindIndexBuffer(command_buff,index_buff_,offser,VK_INDEX_TYPE_UINT16);
-    PushConst push;
-    push.offset=glm::vec2{(float)(2.0f*x_pos_)/WINDOW_Width,(float)(2.0f*y_pos_)/WINDOW_Height};
-    // printf("push constant has offeset %lf and %lf\n",push.offset[0],push.offset[1]);
-    /**
-     * If the line below gives your an error such that @param pipe_lay_ is nulllptr, then check whether you have initialized @param pipe_lay_ after the creation of image. Due to the problems(at the beginning, @param pipe_lay_ isn't initialized), this initialization of @param pipe_lay_ can't be added in the constructor.
-     * 
-     */
-    vkCmdPushConstants(command_buff,*pipe_lay_,VK_SHADER_STAGE_VERTEX_BIT|VK_SHADER_STAGE_FRAGMENT_BIT,0,sizeof(PushConst),&push);
-    vkCmdDrawIndexed(command_buff,index.size(),1,0,0,0);
-}
-void Image::Update(int move_x,int move_y){
-    x_pos_=move_x,y_pos_=move_y;
-}
+
+
 bool Image::Load(const std::string& image_name_){
     FileHelper::IMAGE* im=nullptr;uint32_t w,h;
     std::tie(w,h,im)=FileHelper::LoadImage(image_name_);//this line should be modified
     if(im==nullptr)return false;
     auto image_size=4*w*h;
-    /**
-     * FIXME: is this line functioning?
-     * 
-     */
     x_size_=w,y_size_=h;
     device_->CreateGeneralBuffer(image_size,VK_BUFFER_USAGE_TRANSFER_SRC_BIT, VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT, staging_buff_, staging_buff_mem_);
     void* data;
@@ -198,6 +155,7 @@ VkDescriptorImageInfo Image::GetImageDescriptotInfo(int i){
     };
 }
 Image::~Image(){
+    if(!is_master_)return;
     vkDestroyImageView(device_->device_,image_view_,nullptr);
     vkDestroyImage(device_->device_, image_, nullptr);
     vkFreeMemory(device_->device_, image_mem_, nullptr);

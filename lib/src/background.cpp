@@ -85,6 +85,7 @@ void BackGround::InitPrice() {
 	units_price_["peashooter"] = 0;
 	units_price_["sunflower"] = 0;
 }
+int BackGround::UnitCnt(){return unit_cnt_++;}
 void BackGround::Show(){
 	gm_->Draw(0, 0, gm_->GetImage("map"));
 	gm_->Draw(CHOOSER_X, CHOOSER_Y, gm_->GetImage("chooser"));

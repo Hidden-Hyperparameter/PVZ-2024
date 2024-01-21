@@ -14,6 +14,7 @@ public:
 	bool should_be_removed_ = false;
 	int image_status_ = 0;
 	int max_image_num_;
+	int id_;
 public:
 	BackGround* bkg_;
 	Game* gm_;
