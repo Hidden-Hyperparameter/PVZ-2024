@@ -37,6 +37,7 @@ void Game::LoadAll(){
 //plants
 	LoadPlant("peashooter");
 	LoadPlant("sunflower");
+	LoadPlant("cherrybomb");
 //zombies
 	LoadZombie("zombie");
 }
@@ -67,8 +68,11 @@ void Game::LoadZombie(const std::string& name) {
 	LoadMultiple(name+"/head");
 	LoadMultiple(name+"/body");
 	LoadMultiple(name+"/attack");
+	LoadMultiple(name+"/explode");
 }
-
+std::pair<int,int> Game::GetImageSize(const std::string &name){
+	return app_->GetImageSize(image_dict[name][0]);
+}
 const int Game::GetImageNum(const std::string& name){
 	return image_dict[name].size();
 }

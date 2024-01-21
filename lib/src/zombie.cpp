@@ -42,7 +42,7 @@ void Zombie::DeduceLife(int amount,const std::string& name) {
 		return;
 	}
 	if(name=="explode"){
-		life_=0;
+		life_=-1;
 		explode_=true;
 		return ;
 	}
@@ -63,6 +63,7 @@ void Zombie::Show() {
 		}
 		if(explode_){
 			if(explode_status_==gm_->GetImageNum(name_+"/explode")-1){
+				explode_status_=0;
 				Removed();
 			}
 			gm_->Draw(x_,y_,id_,name_+"/explode",explode_status_);

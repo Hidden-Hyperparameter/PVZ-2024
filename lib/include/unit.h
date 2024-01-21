@@ -8,7 +8,7 @@ class Game;
 class Unit {
 public:
 	int x_, y_;
-	int row_ = -1;
+	int row_ = -1;//start at 0
 	std::string name_;
 	std::string type_;
 	bool should_be_removed_ = false;

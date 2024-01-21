@@ -9,6 +9,11 @@ BackGround::BackGround( Game* gm,int id) : gen_(time(NULL)),  gm_(gm),map_id_(id
 		grid_manager_[i].resize(GRID_Y_NUM, nullptr);
 	}
 }
+void BackGround::InitPrice() {
+	units_price_["peashooter"] = 100;
+	units_price_["sunflower"] = 50;
+	units_price_["cherrybomb"]= 0;
+}
 void BackGround::ChoosePlants() {
 	map_obj_id_=gm_->MakeObject("map");	
 	chooser_obj_id_=gm_->MakeObject("chooser");	
@@ -88,10 +93,7 @@ void BackGround::ChoosePlants() {
 	*/
 }
 
-void BackGround::InitPrice() {
-	units_price_["peashooter"] = 0;
-	units_price_["sunflower"] = 0;
-}
+
 int BackGround::UnitCnt(){return unit_cnt_++;}
 // int BackGround::CreateUnit(const std::string& name){
 // 	int id= UnitCnt();
@@ -106,7 +108,6 @@ void BackGround::Show(){
 		gm_->Draw(CARD_START_X + CARD_X * i, CARD_START_Y,bar_[i].second,gm_->GetCardImage(bar_[i].first));
 	}
 	//show units as well as erasing the garbage(died) units.
-	std::cout<<"unit size "<<units_.size()<<std::endl;
 	for (auto it = units_.begin(); it != units_.end();) {
 		(*it)->Show();
 		if ((*it)->should_be_removed_) {
@@ -122,14 +123,12 @@ void BackGround::CreateSun(){
 	auto xrd = std::uniform_int_distribution<int>(10, x_size_-sun_size_.first);
 	auto yrd = std::uniform_int_distribution<int>(10, y_size_);
 	units_.insert(new Sun(xrd(gen_), 100,y_size_/SUN_STEPS,gm_,this));
-	std::cout<<"unit size ++"<<std::endl;
 }
 void BackGround::CreateZombie() {
 	auto row = std::uniform_int_distribution<int>(0, GRID_Y_NUM-1);
 	int rw = row(gen_);
-	units_.insert(new Zombie(GRID_END_X,GRID_START_Y+(rw - 1) * GRID_Y,(GRID_END_X-GRID_START_X)/ZOMBIE_STEPS,
+	units_.insert(new Zombie(GRID_END_X/2,GRID_START_Y+(rw - 1) * GRID_Y,(GRID_END_X-GRID_START_X)/ZOMBIE_STEPS,
 		gm_,this,rw));
-	std::cout<<"unit size ++"<<std::endl;
 }
 void BackGround::UpdateUnits() {
 	for (auto it : units_) {
@@ -141,10 +140,10 @@ void BackGround::UserClick() {
 	int xp,yp;
 	std::tie(press,std::tie(xp,yp)) = gm_->app_->Mouse();
 	if (press) {//user click
-		printf("user click %d,%d\n", xp,yp);
+		// printf("user click %d,%d\n", xp,yp);
 		if ((xp >= GRID_START_X) && (xp <= GRID_END_X) && (yp>= GRID_START_Y) && (yp <= GRID_END_Y)) {
 			if (placing_plant_.first) {//place the plant onto grid
-				printf("user click grid\n");
+				// printf("user click grid\n");
 				int x_index = (xp - GRID_START_X) / GRID_X;
 				int y_index = (yp - GRID_START_Y) / GRID_Y;
 				if (grid_manager_[x_index][y_index] == nullptr) {//no other plants exist on the grid
@@ -168,14 +167,13 @@ void BackGround::UserClick() {
 		if ((xp >= CARD_START_X) && (xp <= CARD_END_X) && (yp >= CARD_START_Y) && (yp <= CARD_Y)) {//select plant
 			if(placing_plant_.first)return;
 			int index = ((xp-CARD_START_X) / CARD_X) ;
-			printf("user click chooser index %d\n",index);
+			// printf("user click chooser index %d\n",index);
 			if (index >= bar_.size())return;//click on empty bar
 			int price = units_price_[bar_[index].first];
 			if (sun_cnt_ >= price) {
 				sun_cnt_ -= price;
 				Plant* un = MakePlant(bar_[index].first, xp, yp);//make a new plant
 				units_.insert(un);
-				std::cout<<"unit size ++"<<std::endl;
 				placing_plant_ = std::make_pair(true, un);//let it follow mouse in future iterations
 			}
 			return;
@@ -191,22 +189,17 @@ void BackGround::UserClick() {
 		}
 	}else {//user move mouse
 		if (placing_plant_.first) {//the recently-bought plant is following the mouse.
-			printf("plant move to %d,%d\n",xp,yp-GRID_Y/3);
+			// printf("plant move to %d,%d\n",xp,yp-GRID_Y/3);
 			placing_plant_.second->MoveTo(xp, yp-GRID_Y/3);
 		}
 	}
 }
 Plant* BackGround::MakePlant(std::string name, int x, int y) {
 	std::cout << "making unit named " << name << std::endl;
-	if (name == "peashooter")return new PeaShooter(
-		x, y,gm_, this
-	);
-	if (name == "sunflower")return new SunFlower(
-		x, y, gm_, this
-	);
-	return new Plant(
-		x, y, gm_, this
-	);
+	if (name == "peashooter")return new PeaShooter(x, y,gm_, this);
+	if (name == "sunflower")return new SunFlower(x, y, gm_, this);
+	if(name=="cherrybomb")return new CherryBomb(x,y,gm_,this);
+	return new Plant(x, y, gm_, this);
 }
 std::pair<int, Unit*> BackGround::FindMinZombie(int x, int row) {
 	int min_x = x_size_; Unit* ret=nullptr;
@@ -233,4 +226,17 @@ std::pair<int, Unit*> BackGround::FindMaxPlant(int x, int row) {
 	}
 	printf("x-coordinate %d, first plant after is at %d\n", x, max_x);
 	return std::make_pair(max_x, ret);
+}
+std::vector<Unit*> BackGround::GetZombieInRange(std::pair<int,int> left_top,std::pair<int,int> right_bot){
+	printf("find zombie in range (%d,%d)-(%d,%d)\n",left_top.first,left_top.second,right_bot.first,right_bot.second);
+	std::vector<Unit*> ret;
+	for (auto it : units_) {
+		if (it->type_ == "zombie") {
+			if (it->x_<left_top.first||it->x_>right_bot.first)continue;
+			int h=gm_->GetImageSize(it->name_).second;
+			if (it->y_+h<left_top.second||it->y_+h>right_bot.second)continue;
+			ret.push_back(it);
+		}	
+	}
+	return ret;
 }

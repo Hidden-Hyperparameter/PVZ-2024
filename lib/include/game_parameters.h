@@ -13,6 +13,7 @@ public://general
 	static const int UPDATE_TIME         = 200;		//(physical) time interval between updates, unit is milliseconds
 	static const int PLANT_DEFAULT_LIFE  = 100;		//normal plant life
 	static const int ZOMBIE_DEFAULT_LIFE = 100;		//normal zombie life
+	static const int NO_DEATH_LIFE = 0x7fffffff;
 public://plant
 	//peashooter
 	static const int PEA_SHOOT_INTEVAL = 10;
@@ -23,7 +24,7 @@ public://plant
 public://zombies
 	static const int ZOMBIE_EAT = 20;
 public://bullets
-	
+
 public://graphics effect
 	static const int ZOMBIE_DIE_PER_FRAME_TIME=5;
 };

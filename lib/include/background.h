@@ -42,6 +42,10 @@ public:
 	const int STEPS = 2;//inital choose plant steps
 public:
 	//graphics constants(unit: pixels)
+	/**
+	 * @brief note that the y axis point from top to bottom
+	 * 
+	 */
 	const int CHOOSER_X = 100, CHOOSER_Y = 0;
 	const int CARD_START_X = 130, CARD_START_Y = 7;
 	const int CARD_END_X = 610;
@@ -91,4 +95,5 @@ public:
 	Plant* MakePlant(std::string name, int x, int y);//used in interacting with bar
 	std::pair<int,Unit*> FindMinZombie(int x, int row);//find zombie in given row having least x-coordinate, used in pea attacking
 	std::pair<int, Unit*> FindMaxPlant(int x, int row);//find plant in given row having max x-coordinate, used in zombie eating
+	std::vector<Unit*> GetZombieInRange(std::pair<int,int> left_top,std::pair<int,int> right_bot);
 };

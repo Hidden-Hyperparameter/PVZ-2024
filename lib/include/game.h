@@ -80,4 +80,5 @@ public:
 	Vulkan::App::image_t GetImage(const std::string& name,int frame=0);
 	Vulkan::App::image_t GetCardImage(const std::string& name);
 	std::pair<int,int> LoadAndGetImageSize(const std::string &name)const;
+	std::pair<int,int> GetImageSize(const std::string &name);
 };
