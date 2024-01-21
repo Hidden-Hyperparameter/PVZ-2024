@@ -18,7 +18,7 @@ We use the package `EasyX` for the graphics interface.
 **Be sure that you have installed the [EasyX extension](https://easyx.cn/) before running the project!**
 
 To test whether you have downloaded it correctly, you can run the file [test.cpp](/test.cpp). The way that you run it should be: first change the `main` function in [main.cpp](/main.cpp) into comments(`//`), and then change the comments containing `main` function in `test.cpp` into real code. Then, use VS to run the project. If the test is run correctly, you should see the figure below, where the red dots appear whenever you left-click your mouse on the window.
-![figure](/docs/pictures/test.png)
+![figure](docs/pictures/test.png)
 
 After succeed in running this test, you can then change back the code and start developing.
 
