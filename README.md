@@ -20,15 +20,15 @@ As #13 mentioned, since we are Chineses, 我们使用中文.
 **注意：`submodule` 中的Vulkan-Headers并不是上面所说的Vulkan 包，下载了那个`submodule` 并不代表安装了 Vulkan**.
 4. Target: 本项目有两个 target. 请先测试 `test_gui` 可以运行，再运行主要项目.
 
-## Others
+## Code Edit
 
-### 无法解析的外部符号
+### Debug
 
-删除build 文件夹重试,header gaurd
+在 PVZ-2024 这个项目的 [CMakeLists](/CMakeLists.txt) 里，有一个 option DEBUG_VULKAN. 如果将这个开关设为 ON, 则会显示来自 Vulkan 的调试信息。由于 CMake Cache 等原因，设置可能无效。这时候可能需要手动在 [file_helper.h](/gui/lib/include/file_helper.h) 内 `#define VULKAN_DEBUG`.
 
-use pointers
+### Common problem: 无法解析的外部符号
 
-don't use initializer list when constructing objects containing pointers. the sequence may matter
-
-### May not work
-add VULKAN_DEBUG manually
+1. 删除 CMake Cache 重试
+2. 检查是否加入了 header guard, 即 `#pragma once`.
+3. 检查头文件的循环引用, 使用指针来引用其他文件中的 `class` 对象.
+4. Don't use initializer list when constructing objects containing pointers. the sequence may matter.
