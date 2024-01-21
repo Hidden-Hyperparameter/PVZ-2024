@@ -13,6 +13,7 @@ int main()
 	freopen("../../debug.log","w",stdout);
 	Game g;
 	g.Start();
+	// TEST
 	// Game g;
 	// g.Init();
 	// while(g.in_game_){
