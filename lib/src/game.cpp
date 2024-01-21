@@ -72,13 +72,13 @@ void Game::LoadZombie(const std::string& name) {
 const int Game::GetImageNum(const std::string& name){
 	return image_dict[name].size();
 }
-void Game::Draw(int xp,int yp,int im,int id){
-	app_->AddToDrawList(xp,yp,im,id);
+void Game::Draw(int xp,int yp,Vulkan::App::object_t id,Vulkan::App::image_t im){
+	app_->AddToDrawList(xp,yp,id,im);
 }
-int Game::GetImage(const std::string& name,int frame){
+Vulkan::App::image_t Game::GetImage(const std::string& name,int frame){
 	return image_dict[name][frame];
 }
-int Game::GetCardImage(const std::string& name){
+Vulkan::App::image_t Game::GetCardImage(const std::string& name){
 	return GetImage(name+"_card");
 }
 void Game::Start(){
@@ -98,23 +98,27 @@ void Game::Init() {
 	// setlinecolor(BLACK);
 	//show starter page
 
-	/**
-	 * TODO: change the choose plant function
-	 * uncomment this line
-	 */
-	// bkg_->ChoosePlants();
-	for(auto pl:plant_available){
-		bkg_->bar_.push_back(pl);
+	bkg_->ChoosePlants();
+
+}
+Vulkan::App::object_t Game::MakeObject(const std::string& name){
+	if(name==""){
+		return app_->AddOneObject();
+	}else{
+		return app_->AddOneObject(GetImage(name));
 	}
 }
+void Game::Draw(int xp,int yp,Vulkan::App::object_t id,const std::string& name,int frame){
+	Draw(xp,yp,id,GetImage(name,frame));
+}
 void Game::Update() {
+	bkg_->UserClick();
 	auto now=app_->GetTime();
 	// printf("now is %d, next time is %d\n",now,(render_time_+1)* Parameters::RENDER_TIME);
 	if(now>(render_time_+1)* Parameters::RENDER_TIME){
 		app_->DrawFrame();
 		render_time_=now/Parameters::RENDER_TIME;
 		bkg_->Show();
-		bkg_->UserClick();
 	}
 	if(now <= (time_+1) * Parameters::UPDATE_TIME){
 		return;

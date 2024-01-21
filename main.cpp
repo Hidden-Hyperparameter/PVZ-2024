@@ -10,7 +10,7 @@ int main()
 	// app.run();
 	// printf("Hellp,worild!\n");
 
-	// freopen("../../debug.log","w",stdout);
+	freopen("../../debug.log","w",stdout);
 	Game g;
 	g.Start();
 	// Game g;

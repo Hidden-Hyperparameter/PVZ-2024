@@ -31,10 +31,6 @@ class BackGround {
 public:
 	Game* gm_;
 	int map_id_ = 0;
-	/**
-	 * FIXME: app shouldn't be nullptr
-	 * 
-	 */
 public:
 	std::mt19937 gen_;
 	std::unordered_set<Unit*> units_;
@@ -61,19 +57,20 @@ public:
 	const int PANEL_END_X = 439, PANEL_END_Y = 469;
 public:
 	ExMessage msg_;//interact with user
-	int map_image_;
-	int chooser_image_;  
-	int panel_image_;
-	std::unordered_map<std::string, int> units_max_image_num_;//for each unit, how many images do it have? Note: the name may not be a unit name, such as zombie/head
-	std::unordered_map<std::string, std::vector<IMAGE*>> units_image_;
-	std::unordered_map<std::string, IMAGE*> cards_image_;//plant cards: in chooser
+	Vulkan::App::object_t map_obj_id_;
+	Vulkan::App::object_t chooser_obj_id_;  
+	Vulkan::App::object_t panel_obj_id_;
 	std::unordered_map<std::string, int> units_price_;//price(unit:suns)
 public:
 	std::pair<int, int> sun_size_;//this is used for collecting sun
 public:
 	int sun_cnt_ = 50;//initial sun count is 50
+	/**
+	 * @brief the number of units constructed.
+	 * 
+	 */
 	int unit_cnt_=0;
-	std::vector<std::string> bar_;//bar_=chooser
+	std::vector<std::pair<std::string,Vulkan::App::object_t> > bar_;//bar_=chooser
 	std::pair<bool, Plant*> placing_plant_;//the plant which is currently bought and following the mouse. If .first is false, then no such plant exist
 public:
 //Initialize
@@ -83,6 +80,7 @@ public:
 	int UnitCnt();
 //Get image based on name and status. Warning: if status out of bound, then this will abort.
 //Create
+	// int CreateUnit(const std::string& name);
 	void CreateSun();
 	void CreateZombie();
 //Others

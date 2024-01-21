@@ -6,7 +6,7 @@
 #include <string>
 /**
  * FIXME:
- * 
+ * these define lines should be 
  *
  * 
  * 
@@ -44,15 +44,16 @@ public:
 	 * @brief (unit_name,frame) ->image id
 	 * images are unique.
 	 */
-	std::unordered_map<std::string,std::vector<int> > image_dict;
+	std::unordered_map<std::string,std::vector<Vulkan::App::image_t> > image_dict;
 	/**
 	 * @brief (unit_name,frame) + unit_id ->image id
 	 * images are not unique, use copy constructor
 	 */
-	std::unordered_map<std::tuple<std::string,int,int>,int> real_image_dict;
+	// std::unordered_map<int,Vulkan::App::object_t>obj_dict;
 	std::vector<std::string> plant_available;
 public:
 	const int GetImageNum(const std::string& name);
+	Vulkan::App::object_t MakeObject(const std::string& name="");
 public:
 	Game();
 	void Show()const;
@@ -68,14 +69,15 @@ public:
 	 * @param yp 
 	 * @param image 
 	 */
-	void Draw(int xp,int yp,int image,int id);
+	void Draw(int xp,int yp,Vulkan::App::object_t id,Vulkan::App::image_t image);
+	void Draw(int xp,int yp,Vulkan::App::object_t id,const std::string& name,int frame=0);
 	std::string ChangeName(const std::string &name) const ;
 	int LoadOneImage(const std::string& name);
 	int LoadOneImageNoFailure(const std::string& name);
 	void LoadMultiple(const std::string& unit_name);
 	void LoadPlant(const std::string& unit_name);
 	void LoadZombie(const std::string& unit_name);
-	int GetImage(const std::string& name,int frame=0);
-	int GetCardImage(const std::string& name);
+	Vulkan::App::image_t GetImage(const std::string& name,int frame=0);
+	Vulkan::App::image_t GetCardImage(const std::string& name);
 	std::pair<int,int> LoadAndGetImageSize(const std::string &name)const;
 };

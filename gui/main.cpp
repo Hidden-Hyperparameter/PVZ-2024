@@ -12,10 +12,13 @@ int main(){
     // Vulkan::Object obj1=Vulkan::Object(& app);
     Vulkan::App::object_t obj1=app.AddOneObject();
     Vulkan::App::object_t obj2=app.AddOneObject();
+    int virtual_time=0;
     while(app.IsRunning()){
         app.PollEvent();
         //update
         auto pass=app.GetTime();
+        if(pass<(virtual_time+1)*50)continue;
+        virtual_time=pass/50;
         app.AddToDrawList(500 + (pass%1000)*glm::cos((float)pass/1000),500 + (pass%1000)*glm::sin((float)pass/1000),obj1,id);
         app.AddToDrawList(500 - (pass%1000)*glm::cos((float)pass/1000),500 - (pass%1000)*glm::sin((float)pass/1000),obj2,id);
         app.DrawFrame();

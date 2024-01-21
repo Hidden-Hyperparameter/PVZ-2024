@@ -87,7 +87,7 @@ void App::DrawFrame(){
      * This line: clear or not?
      * 
      */
-    // have_to_draw.clear();
+    have_to_draw.clear();
 }
 
 bool App::CheckValidationLayer(){

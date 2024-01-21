@@ -44,18 +44,18 @@ void Zombie::DeduceLife(int amount) {
 void Zombie::Show() {
 	if (life_ < 0) {//show dead images
 		bool head_show = false,body_show=false;
-		if (die_head_status < bkg_->units_max_image_num_["zombie/head"]-1)
-			head_show=true,gm_->Draw(x_, y_, gm_->GetImage("zombie/head", die_head_status)),die_head_status++;
-		if (die_body_status < bkg_->units_max_image_num_["zombie/body"]-1)
-			body_show=true,gm_->Draw(x_, y_, gm_->GetImage("zombie/body", die_body_status)),die_body_status++;
+		if (die_head_status < gm_->GetImageNum(name_+"/head")-1)
+			head_show=true,gm_->Draw(x_, y_, id_,"zombie/head", die_head_status),die_head_status++;
+		if (die_body_status < gm_->GetImageNum(name_+"/body")-1)
+			body_show=true,gm_->Draw(x_, y_, id_,"zombie/body", die_head_status),die_body_status++;
 		if(!head_show&&!body_show) Removed();//remove after shown
 	}
 	else {
 		if (eating_plant_ != nullptr) {//show eating images
-			gm_->Draw(x_, y_, gm_->GetImage(name_ + "/attack", eat_image_status));
+			gm_->Draw(x_, y_, id_,name_ + "/attack", eat_image_status);
 		}
 		else {//show moving images
-			gm_->Draw(x_, y_, gm_->GetImage(name_, image_status_));
+			gm_->Draw(x_, y_, id_,name_, image_status_);
 		}
 	}
 }

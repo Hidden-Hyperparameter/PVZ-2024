@@ -1,5 +1,5 @@
 #include "file_helper.h"
-#define RELATIVE {"../../","","../../../","../../../gui/"} //Change this line based on the current working directory. More specifically, please APPEND instead of REMOVE items from the list.
+#define RELATIVE {"../../","","../../../gui/","../../gui/","../../../"} //Change this line based on the current working directory. More specifically, please APPEND instead of REMOVE items from the list.
 std::vector<char> FileHelper::ReadFile(const std::string& file_name){
     #ifdef VULKAN_DEBUG
     char cwd[1024];
