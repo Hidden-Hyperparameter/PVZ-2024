@@ -1,7 +1,9 @@
 #include "sunflower.h"
 #include "sun.h"
-SunFlower::SunFlower(int xp, int yp, Game* gm, BackGround* bkg, int row, int max_life):
-	Plant(xp, yp, gm, bkg, "sunflower", row, max_life),gen_sun_time_(GEN_SUN_INTERVAL/2) {
+SunFlower::SunFlower(int xp, int yp, Game* gm, BackGround* bkg, int mxnum, int row, int max_life):
+	Plant(xp, yp, gm, bkg, mxnum, row, max_life),gen_sun_time_(GEN_SUN_INTERVAL/2) {
+	name_ = "sunflower";
+	bullet_type_ = Parameters::Peatype::none;
 }
 void SunFlower::Execute() {
 	printf("sunflower gen sun time %d\n",gen_sun_time_);
@@ -11,7 +13,7 @@ void SunFlower::Execute() {
 		gen_sun_time_ = next(bkg_->gen_);
 		printf("sunflower next gen sun time change to %d\n", gen_sun_time_);
 	}
-	else {
+	else {g
 		gen_sun_time_--;
 	}
 }

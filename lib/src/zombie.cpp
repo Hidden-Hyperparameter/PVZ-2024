@@ -37,8 +37,10 @@ void Zombie::Attack() {
 		eating_plant_ = nullptr;
 	}
 }
-void Zombie::DeduceLife(int amount) {
-	if (life_ < 0)return;
+void Zombie::DeduceLife(int amount,Parameters::Peatype type) {
+	if (life_ < 0) {
+		return;
+	}
 	life_ -= amount;
 	if(life_<0){
 		head_id_=gm_->MakeObject("zombie/head");
